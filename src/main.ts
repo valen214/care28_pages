@@ -1,7 +1,10 @@
 import App from './App.svelte';
 
+let root = document.createElement("div");
+document.body.appendChild(root);
+
 const app = new App({
-	target: document.getElementById("root1"),
+	target: root,
 	props: {
 		name: 'world'
 	}

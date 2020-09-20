@@ -6,8 +6,13 @@ import { terser } from 'rollup-plugin-terser';
 import sveltePreprocess from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
 import htmlTemplate from 'rollup-plugin-generate-html-template';
+import html from '@rollup/plugin-html';
+import multi from '@rollup/plugin-multi-entry';
+import multiInput from 'rollup-plugin-multi-input';
 
-const production = !process.env.ROLLUP_WATCH;
+import path from "path";
+
+const production = process.env.mode === "production"; // !process.env.ROLLUP_WATCH;
 
 function serve() {
 	let server;
@@ -32,18 +37,26 @@ function serve() {
 
 let index = 0;
 let genConfig = ({
+  name = "app",
   input = 'src/main.ts'
 } = {}) => {
   ++index;
   return {
     input,
     output: {
-      sourcemap: true,
-      format: 'iife',
-      name: 'app',
-      file: `public/build/bundle${index || ''}.js`
+      sourcemap: !production,
+      format: 'esm',
+      // name,
+      // file: `public/build/bundle.js`,
+      dir: "public/",
     },
     plugins: [
+      {
+          name: 'watch-external',
+          buildStart(){
+              this.addWatchFile(path.resolve(__dirname, 'src/index.html'))
+          }
+      },
       svelte({
         // enable run-time checks when not in production
         dev: !production,
@@ -53,6 +66,7 @@ let genConfig = ({
           css.write('bundle.css');
         },
         preprocess: sveltePreprocess(),
+        customElement: true
       }),
   
       // If you have external dependencies installed from
@@ -69,10 +83,8 @@ let genConfig = ({
         sourceMap: !production,
         inlineSources: !production
       }),
-      htmlTemplate({
-        template: 'src/index.html',
-        target: 'index.html',
-      }),
+      // html(),
+      // multi(),
   
       // In dev mode, call `npm run start` once
       // the bundle has been generated
@@ -84,7 +96,14 @@ let genConfig = ({
   
       // If we're building for production (npm run build
       // instead of npm run dev), minify
-      production && terser()
+      production && terser(),
+      multiInput({
+      }),
+      htmlTemplate({
+        template: 'src/index.html',
+        target: 'index.html',
+        attrs: [ "type='module'" ]
+      }),
     ],
     watch: {
       clearScreen: false
@@ -93,8 +112,12 @@ let genConfig = ({
 }
 
 export default [
-  genConfig(),
   genConfig({
-    input: 'src/main2.ts',
+    name: "app",
+    input: [
+      'src/pages/Profile.svelte',
+      'src/pages/Home.svelte',
+      // 'src/main.ts',
+    ]
   })
 ];
