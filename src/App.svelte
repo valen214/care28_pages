@@ -1,11 +1,28 @@
 
-<svelte:options tag={null}/>
+<svelte:options tag="my-app"/>
 
 <script lang="ts">
-	export let name: string;
-</script>
 
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
+  import Home from "./pages/Home.svelte";
+  import Profile from "./pages/Profile.svelte";
+  
+  let target: string;
+  switch(location.pathname.split("/")[1]){
+  case "profile":
+    target = Profile;
+    break;
+  case "home":
+  default:
+    target = Home;
+    break;
+  }
+  
+
+</script>
+<style>
+  body {
+    background: #000;
+  }
+</style>
+
+<svelte:component tag={target} />

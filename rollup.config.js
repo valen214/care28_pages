@@ -45,6 +45,7 @@ let genConfig = ({
     input,
     output: {
       sourcemap: !production,
+      chunkFileNames: "[name].js",
       format: 'esm',
       // name,
       // file: `public/build/bundle.js`,
@@ -55,6 +56,11 @@ let genConfig = ({
           name: 'watch-external',
           buildStart(){
               this.addWatchFile(path.resolve(__dirname, 'src/index.html'))
+          }
+      },
+      {
+          name: 'rename-index',
+          writeBundle(options, bundle){
           }
       },
       svelte({
@@ -115,9 +121,8 @@ export default [
   genConfig({
     name: "app",
     input: [
-      'src/pages/Profile.svelte',
-      'src/pages/Home.svelte',
-      // 'src/main.ts',
+      'src/pages/**/*.svelte',
+      'src/main.ts',
     ]
   })
 ];
