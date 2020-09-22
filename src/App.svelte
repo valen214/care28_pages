@@ -1,28 +1,31 @@
 
 <svelte:options tag="my-app"/>
 
-<script lang="ts">
+<script>
+  let path = location.pathname.split("/")[1];
+  let props = {};
 
-  import Home from "./pages/Home.svelte";
-  import Profile from "./pages/Profile.svelte";
-  
-  let target: string;
-  switch(location.pathname.split("/")[1]){
-  case "profile":
-    target = Profile;
-    break;
-  case "home":
-  default:
-    target = Home;
-    break;
-  }
-  
+  console.log("path:", path);
 
+  // search passing props to custom element
 </script>
-<style>
-  body {
-    background: #000;
-  }
-</style>
 
-<svelte:component tag={target} />
+
+
+
+
+{#if path === "login"}
+  <pages-login />
+{:else if path === "profile"}
+  <pages-profile {...{
+    username: "Valen",
+    usertype: "client"
+  }} />
+{:else}
+  <pages-home products={JSON.stringify({
+    "5": {
+      "name": "2",
+      "description": "3"
+    }
+  })} />
+{/if}

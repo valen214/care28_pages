@@ -8,26 +8,33 @@
     "1": {
       name: "product NAME",
       description: "HELLO WORLD! product description"
+    },
+    "2": {
+      name: "PRODUCT TWO",
+      description: "PRODUCT TWO DESCRIPTION"
     }
   };
+
+  $: if(typeof products === "string"){
+    try {
+      products = JSON.parse(products);
+    } catch(e){
+      products = {};
+    }
+  }
 </script>
 
 
 <style>
-  .top-bar {
-    height: 80px;
-  }
-  div {
-    border: 1px solid black;
+  .page-content {
+    padding: 15px 20px 0;
   }
 </style>
 
-<div class="top-bar">
-
-</div>
-<div>
+<top-bar></top-bar>
+<div class="page-content">
   {#each Object.entries(products) as [ id, { name, description }] }
-    <home-card class="card" style="width:100px">
+    <home-card class="card" style="margin:5px;">
       <span slot="name">
         {name}
       </span>

@@ -11,7 +11,12 @@
 </script>
 
 <style>
+  * {
+    box-sizing: border-box;
+  }
+
   div {
+    display: inline-block;
     padding: 15px;
     border: 1px solid rgba(0, 0, 0, 0.2);
     box-shadow: 0 2px 1px -1px rgba(0,0,0,.2),
@@ -23,6 +28,6 @@
 https://svelte.dev/repl/ff94ad9fbb18495099f2e6e31b86bc9e?version=3.9.2
 -->
 <div style="{style};{'padding:' + padding}">
-  <slot name="name"></slot>
+  <slot name="name"></slot><br />
   <slot name="description"></slot>
 </div>

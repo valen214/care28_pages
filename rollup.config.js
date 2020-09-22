@@ -24,7 +24,7 @@ function serve() {
 	return {
 		writeBundle() {
 			if (server) return;
-			server = require('child_process').spawn('npm', ['run', 'start', '--', '--dev'], {
+			server = require('child_process').spawn('npm', ['run', 'start', '--', '--dev', '-s'], {
 				stdio: ['ignore', 'inherit', 'inherit'],
 				shell: true
 			});
@@ -122,6 +122,7 @@ export default [
     name: "app",
     input: [
       'src/pages/**/*.svelte',
+      "src/App.svelte",
       'src/main.ts',
     ]
   })
