@@ -13,6 +13,9 @@ function main1(){
   let prop: object = {};
   
   switch(location.pathname.split("/")[1]){
+  case "register":
+    target = "pages-register";
+    break;
   case "login":
     target = "pages-login";
     break;

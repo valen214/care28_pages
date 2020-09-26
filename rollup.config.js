@@ -12,7 +12,7 @@ import multiInput from 'rollup-plugin-multi-input';
 
 import path from "path";
 
-const production = process.env.mode === "production"; // !process.env.ROLLUP_WATCH;
+const production = process.env.NODE_ENV === "production"; // !process.env.ROLLUP_WATCH;
 
 function serve() {
 	let server;
@@ -111,9 +111,6 @@ let genConfig = ({
         attrs: [ "type='module'" ]
       }),
     ],
-    watch: {
-      clearScreen: false
-    }
   };
 }
 
@@ -125,5 +122,9 @@ export default [
       "src/App.svelte",
       'src/main.ts',
     ]
+  }),
+  genConfig({
+    name: "register-page",
+    input: "src/pages/Register.svelte"
   })
-];
+][1];

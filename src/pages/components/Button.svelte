@@ -8,7 +8,7 @@
   export let id;
   export let background;
   export let hoverbgcolor;
-  export let style;
+  export let style, _style;
 
   console.log(hoverbgcolor);
 </script>
@@ -16,11 +16,12 @@
 
 
 <button {id} on:click
-    style={
-      `background: ${background};` +
-      `--hover-bg-color: ${hoverbgcolor};` +
-      style
-    }>
+    style={[
+      background && `background: ${background}`,
+      hoverbgcolor && `--hover-bg-color: ${hoverbgcolor}`,
+      style,
+      _style,
+    ].filter(Boolean).join(";")}>
   <slot></slot>
 </button>
 
