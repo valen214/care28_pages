@@ -2,8 +2,6 @@
 
 
 
-<svelte:options tag={"home-card"} />
-
 <script>
   export let style;
   export let padding = "50px";

@@ -1,6 +1,5 @@
 
 
-<svelte:options tag="component-button" />
 
 <script>
   // https://svelte.dev/tutorial/actions

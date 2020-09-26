@@ -18,10 +18,16 @@
       height: 100%;
     }
   </style>
-<link rel="stylesheet" type="text/css" href="bundle.css">
+  <link rel="stylesheet" href="bundle.css" />
 </head>
 
 <body>
-<script type='module' src="pages\Register.js"></script>
+  <script type="module">
+    import Home from "/pages/Home.js";
+
+    new Home({
+      target: document.body
+    });
+  </script>
 </body>
 </html>

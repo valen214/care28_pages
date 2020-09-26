@@ -1,8 +1,8 @@
 
 
-<svelte:options tag="pages-login" />
-
 <script>
+  import Button from "./components/Button.svelte"
+
   let loading = false;
 
   function login(e){
@@ -32,17 +32,17 @@
             placeholder="password" />
       </div>
       <div class="row flex-center">
-        <component-button id="login-button"
+        <Button id="login-button"
             hoverbgcolor="#ccf"
-            on:click={login}>Login</component-button>
+            on:click={login}>Login</Button>
         <a id="register-button" href="/register">register</a>
       </div>
     </div>
     <div class="loading-panel flex-center"
         style={"display:" + (loading ? "flex" : "none")}>
       Loading...
-      <component-button id="cancel-button"
-          on:click={cancelLoading}>cancel</component-button>
+      <Button id="cancel-button"
+          on:click={cancelLoading}>cancel</Button>
     </div>
   </div>
 </div>

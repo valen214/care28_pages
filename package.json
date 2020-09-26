@@ -5,7 +5,8 @@
     "build": "cross-env NODE_ENV=production rollup -c",
     "dev1": "nodemon --watch src -e js,ts,html,svelte --exec \"npm run build\"",
     "dev": "rollup -c -w",
-    "start": "sirv public",
+    "server": "npm run server:start -- --dev",
+    "server:start": "sirv public",
     "start1": "npx rimraf -rf public && concurrently -k \"npm:dev\" \"npm:build\"",
     "validate": "svelte-check"
   },

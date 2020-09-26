@@ -1,7 +1,5 @@
 
 
-<svelte:options tag="top-bar" />
-
 <script>
   export let loggedin = false;
   $: console.log("loggedin:", loggedin, typeof loggedin);

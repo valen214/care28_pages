@@ -1,8 +1,10 @@
 
 
-<svelte:options tag={"pages-home"} />
-
 <script>
+  import TopBar from "./components/TopBar.svelte";
+  import Card from "./components/Card.svelte";
+
+  let loggedin = localStorage.getItem("session");
 
   export let products = {
     "1": {
@@ -31,16 +33,16 @@
   }
 </style>
 
-<top-bar></top-bar>
+<TopBar {loggedin} ></TopBar>
 <div class="page-content">
   {#each Object.entries(products) as [ id, { name, description }] }
-    <home-card class="card" style="margin:5px;">
+    <Card class="card" style="margin:5px;">
       <span slot="name">
         {name}
       </span>
       <span slot="description">
         {description}
       </span>
-    </home-card>
+    </Card>
   {/each}
 </div>

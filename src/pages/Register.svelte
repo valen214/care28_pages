@@ -1,6 +1,4 @@
 
-<svelte:options tag="pages-register" />
-
 <script>
 
   let error_message;

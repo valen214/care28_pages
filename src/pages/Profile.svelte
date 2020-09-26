@@ -1,5 +1,4 @@
 
-<svelte:options tag="pages-profile" />
 
 <script>
 
@@ -72,7 +71,10 @@
 </div>
 <div class="profile-tabs-group">
   {#each tabs as tab, i}
-    <div class='profile-tab {i === 0 ? 'active' : '' }'>
+    <div class='profile-tab {i === 0 ? 'active' : '' }'
+        on:click={() => {
+          activeTab = i;
+        }}>
       {tab}
     </div>
   {/each}
@@ -162,90 +164,94 @@
 <!------------------------------------------------------
 ----------------- CLIENT PROFILE CONTENT --------------->
 
-<div class="profile-tab-content profile-tab-content-0">
-  <style>
-    .profile-tab-content-product {
-      width: 360px;
-      padding: 15px;
-      border: 1px solid rgba(0, 0, 0, 0.2);
-      font-family: "Inter var", -apple-system,
-          BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
-    }
-    
-    .profile-tab-content-product:not(:last-child) {
-      border-bottom: none;
-    }
+  {#if activeTab === 0}
+  <div class="profile-tab-content profile-tab-content-0">
+    <style>
+      .profile-tab-content-product {
+        width: 360px;
+        padding: 15px;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        font-family: "Inter var", -apple-system,
+            BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
+      }
+      
+      .profile-tab-content-product:not(:last-child) {
+        border-bottom: none;
+      }
 
-    .buttons-container {
-      padding: 15px;
-      margin-top: 15px;
-    }
-    .profile-tab-content-product-button {
-      padding: 15px;
-      cursor: pointer;
-      border: 1px solid rgba(0, 0, 0, 0.2);
-      display: inline-block;
-      margin-right: 15px;
-      margin-top: 15px;
-      background: #cd2653;
-      color: white;
-      font-weight: 600;
-      letter-spacing: 0.0333em;
-      line-height: 1.25;
-    }
-  </style>
-  <div class="profile-tab-content-product">
-      Product 1 <span> from shop 1 </span><br />
-      Price: NIL <br />
-      <div class="buttons-container">
-        <a href="/" class="profile-tab-content-product-button">
-          Mention in conversation
-        </a>
-        <a href="/" class="profile-tab-content-product-button">
-          Make Appointment
-        </a>
-      </div>
+      .buttons-container {
+        padding: 15px;
+        margin-top: 15px;
+      }
+      .profile-tab-content-product-button {
+        padding: 15px;
+        cursor: pointer;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        display: inline-block;
+        margin-right: 15px;
+        margin-top: 15px;
+        background: #cd2653;
+        color: white;
+        font-weight: 600;
+        letter-spacing: 0.0333em;
+        line-height: 1.25;
+      }
+    </style>
+    <div class="profile-tab-content-product">
+        Product 1 <span> from shop 1 </span><br />
+        Price: NIL <br />
+        <div class="buttons-container">
+          <a href="/" class="profile-tab-content-product-button">
+            Mention in conversation
+          </a>
+          <a href="/" class="profile-tab-content-product-button">
+            Make Appointment
+          </a>
+        </div>
+    </div>
+    <div class="profile-tab-content-product">
+        Product 2 <span> from shop 1 </span><br />
+        Price: NIL<br />
+        Appointment with agent5253 on <i> 23 May 1023 (3 days after)</i>
+        <div class="buttons-container">
+          
+          <a href="/" class="profile-tab-content-product-button">
+            Change Appointment Date
+          </a>
+          <a href="/" class="profile-tab-content-product-button">
+            Mention in conversation
+          </a>
+        </div>
+    </div>
   </div>
-  <div class="profile-tab-content-product">
-      Product 2 <span> from shop 1 </span><br />
-      Price: NIL<br />
-      Appointment with agent5253 on <i> 23 May 1023 (3 days after)</i>
-      <div class="buttons-container">
-        
-        <a href="/" class="profile-tab-content-product-button">
-          Change Appointment Date
-        </a>
-        <a href="/" class="profile-tab-content-product-button">
-          Mention in conversation
-        </a>
-      </div>
+  {:else if activeTab === 1}
+  <div class="profile-tab-content profile-tab-content-1">
+    <style>
+      .profile-tab-content-appointment {
+        width: 360px;
+        padding: 15px;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+      }
+      
+      .profile-tab-content-appointment:not(:last-child) {
+        border-bottom: none;
+      }
+    </style>
+    <div class="profile-tab-content-appointment">
+      Appointment to agent5132 (Pending for agent approval) <br />
+      <i>date undecided</i> <br />
+      Topic: <i>to be discussed</i>
+    </div>
   </div>
-</div>
-<div class="profile-tab-content profile-tab-content-1">
-  <style>
-    .profile-tab-content-appointment {
-      width: 360px;
-      padding: 15px;
-      border: 1px solid rgba(0, 0, 0, 0.2);
-    }
-    
-    .profile-tab-content-appointment:not(:last-child) {
-      border-bottom: none;
-    }
-  </style>
-  <div class="profile-tab-content-appointment">
-    Appointment to agent5132 (Pending for agent approval) <br />
-    <i>date undecided</i> <br />
-    Topic: <i>to be discussed</i>
+  {:else if activeTab === 2}
+  <div class="profile-tab-content profile-tab-content-2">
+    Tab 3
   </div>
-</div>
-<div class="profile-tab-content profile-tab-content-2">
-  Tab 3
-</div>
-<div class="profile-tab-content profile-tab-content-3">
-  Tab 4
-</div>
-
+  {:else}
+  <div class="profile-tab-content profile-tab-content-3">
+    Tab 4
+  </div>
+  {/if}
 {/if}
 <style>
   .user-bio {
@@ -316,13 +322,6 @@
 }
 .profile-tab:hover {
     background: rgba(0, 0, 0, 0.1);
-}
-.profile-tab-content-container > .profile-tab-content {
-    display: none;
-    padding: 15px;
-}
-.profile-tab-content-container > .profile-tab-content.active {
-    display: block;
 }
 
 </style>
