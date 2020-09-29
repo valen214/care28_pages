@@ -41,17 +41,20 @@
       showWrongInfoMessage = true;
 
       console.error("user login failed:", await out.json());
+      loading = false;
       return;
     }
     out = await out.json();
     console.log(out);
     if(out.body !== "ok"){
-      console.error("unexpected api response")
+      console.error("unexpected api response");
+      loading = false;
       return;
     }
     token = await token;
     if(token.status !== 200){
       console.error("retrieve JWT failed:", token, await token.json());
+      loading = false;
       return;
     }
     token = await token.json();
@@ -106,6 +109,7 @@
       </div>
       <div class="row flex-center">
         <Button id="login-button"
+            background="#08f"
             hoverbgcolor="#ccf"
             on:click={login}>Login</Button>
         <a id="register-button" href="/register">register</a>
@@ -138,7 +142,7 @@
   .page-content {
     height: 100%;
     width: 100%;
-    background: #232f3e;
+    background: #00c771;
   }
 
   .login-panel-positioner {

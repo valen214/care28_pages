@@ -3,6 +3,8 @@
 <script>
   import TopBar from "./components/TopBar.svelte";
 
+  export let token = localStorage.getItem("token");
+  export let avatar_url = "";
   export let username = "";
   export let usertype = "";
   export let products = {
@@ -15,6 +17,8 @@
       description: "PRODUCT TWO DESCRIPTION"
     }
   };
+
+  console.log("products:", products);
 
   export let tabs;
   export let activeTab = 0;
@@ -36,6 +40,34 @@
     }
   }
 
+  function doAPICall(payload){
+    payload.token = localStorage.getItem("token");
+    if(!payload.token){
+      throw new Error("token is empty!");
+    }
+    return fetch(location.origin + "/wp-json/api/v1/info", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+    });
+  }
+
+  if(!token){
+    location.pathname = "/login";
+  }
+
+  if(!avatar_url){
+    doAPICall({
+      type: "query_user",
+      fields: [ "avatar" ],
+    }).then(res => res.json()
+    ).then(res => {
+      avatar_url = "/wp-content/uploads/avatar/" + res.avatar;
+    });
+  }
+
 
   const pendingAppointmentButtons = `
   <div class="profile-tab-content-pending-appointment-buttons">
@@ -54,13 +86,17 @@
 
 </script>
 
-<TopBar loggedin={true}/>
+<TopBar loggedin={true} />
+
+<div class="page-root">
+
+
+
 
 <div class="user-bio">
-  <div class="user-bio-avatar">
-    <img class="user-bio-avatar-img" alt="avatar"
-        src="/wp-content/themes/twentytwenty/assets/images/2020-avatar.jpg" />
-  </div>
+  <img class="user-bio-avatar-img"
+      alt="avatar"
+      src={avatar_url} />
   <div class="user-bio-text-container">
       <h2 class="user-bio-name">
           { username }
@@ -80,6 +116,8 @@
     </div>
   {/each}
 </div>
+<div class="profile-tab-content-container">
+  
 {#if usertype === "agent"}
 <!----------------------------------------------------
 ---------------- AGENT PROFILE CONTENT -------------->
@@ -254,35 +292,79 @@
   </div>
   {/if}
 {/if}
+</div>
 
+<div class="profile-functionals-container">
+  <div class="profile-functionals-buttons">
+      <a href="/edit-profile">Edit User Profile</a>
+      {#if usertype === "agent" }
+        <a href="/edit-shop">Edit Shop & Products</a>
+      {/if}
+  </div>
+</div>
+
+
+
+</div>
 
 <style>
+  :global(*) {
+    box-sizing: border-box;
+  }
+  :global(body) {
+		margin: 0;
+	}
+
+  .page-root {
+      padding: 15px;
+      display: grid;
+      grid-template-areas:
+              "b f"
+              "g f"
+              "c f";
+      grid-template-rows: 150px auto 1fr;
+      grid-template-columns: 70% 1fr;
+  }
+  
+  .page-root > .user-bio {
+      grid-area: b;
+  }
+  .page-root > .profile-tabs-group {
+      grid-area: g;
+  }
+  .page-root > .profile-tab-content-container {
+      grid-area: c;
+  }
+  .page-root > .profile-functionals-container {
+      grid-area: f;
+  }
+
+
   .user-bio {
       display: flex;
       flex-direction: "row";
       margin-bottom: 30px;
   }
   
-  .user-bio-avatar {
-      display: inline-block;
-      height: 100%;
-      border: 1px solid rgba(0, 0, 0, 0.2);
-      margin: 5px 20px 13px 0;
-  }
   .user-bio-avatar-img {
       object-fit: scale-down;
       height: 100%;
+      max-width: 100%;
   }
   
   .user-bio-text-container,
   .user-bio-name,
   .user-bio-usertype {
-      display: inline-block;
+    display: inline-block;
+  }
+
+  .user-bio-text-container {
+    margin-left: 15px;
   }
   
   .user-bio-name {
-    font-size: 3.2rem;
-    margin: 3.5rem 0 2rem;;
+    font-size: 45px;
+    margin: 0 0 15px 0;
   }
   
   .user-bio-text-container {

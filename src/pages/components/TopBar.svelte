@@ -1,16 +1,20 @@
 
 
-<script>import Button from "./Button.svelte";
+<script>
+  import Button from "./Button.svelte";
 
   export let loggedin = false;
   $: console.log("loggedin:", loggedin, typeof loggedin);
+
+  function logout(){
+    localStorage.removeItem("token");
+  }
 </script>
 
 <style>
   .top-bar {
-    background: #232f3e;
+    background: white;
     display: flex;
-    color: white;
     height: 80px;
   }
 
@@ -25,14 +29,18 @@
     padding: 15px 35px 15px 15px;
     cursor: pointer;
     height: 100%;
+    width: 160px;
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
   .nav-center {
-    margin: auto;
+    margin: auto 0 auto auto;
     height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .search-bar {
@@ -46,10 +54,12 @@
   }
 
   .nav-right {
-    margin-left: auto;
+    margin-right: 0;
+    display: inline-flex;
   }
 
   .sign-in-button,
+  .profile-button,
   .log-out-button {
     display: flex;
     justify-content: center;
@@ -72,24 +82,37 @@
 
 <div class="top-bar">
   <div class="nav-left">
-    <a href="/">
-      <h2 class="logo">Care28</h2>
+    <a href="/" class="logo">
+      <img src="/wp-content/themes/twentytwenty/assets/images/logo.png"
+          alt="logo" />
     </a>
+    
   </div>
   <div class="nav-center">
-    <div class="search-bar">
-      <input type="text" />
-    </div>
+    <a href="https://care28.com/%E6%96%87%E7%AB%A0%E7%9B%AE%E9%8C%84/?cat=%E8%B2%B7%E6%A8%93">
+      <img alt=""
+          src="/wp-content/themes/twentytwenty/assets/images/%E8%B2%B7%E6%A8%93%E5%BF%83%E5%BE%97.png">
+    </a>
+    <a href="https://care28.com/%E6%96%87%E7%AB%A0%E7%9B%AE%E9%8C%84/?cat=%E6%8C%89%E6%8F%AD">
+      <img alt=""
+          src="/wp-content/themes/twentytwenty/assets/images/按揭智慧.png">
+    </a>
   </div>
   <div class="nav-right">
     {#if !loggedin}
       <a class="sign-in-button"
           href="/login">
-        Sign In
+        登入
       </a>
     {:else}
-      <a class="log-out-button" href="/">
-        Log out
+      <a class="profile-button"
+          href="/profile">
+        Profile
+      </a>
+      <a class="log-out-button"
+          href="/"
+          on:click={logout}>
+        登出
       </a>
     {/if}
   </div>
