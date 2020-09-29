@@ -1,6 +1,7 @@
 
 
 <script>
+  import TopBar from "./components/TopBar.svelte";
 
   export let username = "";
   export let usertype = "";
@@ -53,7 +54,7 @@
 
 </script>
 
-<top-bar loggedin={true}/>
+<TopBar loggedin={true}/>
 
 <div class="user-bio">
   <div class="user-bio-avatar">
@@ -71,7 +72,7 @@
 </div>
 <div class="profile-tabs-group">
   {#each tabs as tab, i}
-    <div class='profile-tab {i === 0 ? 'active' : '' }'
+    <div class='profile-tab {i === activeTab ? 'active' : '' }'
         on:click={() => {
           activeTab = i;
         }}>
@@ -253,6 +254,8 @@
   </div>
   {/if}
 {/if}
+
+
 <style>
   .user-bio {
       display: flex;

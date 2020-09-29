@@ -1,15 +1,12 @@
 
 
-<script>
+<script>import Button from "./Button.svelte";
+
   export let loggedin = false;
   $: console.log("loggedin:", loggedin, typeof loggedin);
 </script>
 
 <style>
-  * {
-    box-sizing: border-box;
-  }
-
   .top-bar {
     background: #232f3e;
     display: flex;
@@ -52,7 +49,8 @@
     margin-left: auto;
   }
 
-  .sign-in-button {
+  .sign-in-button,
+  .log-out-button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -62,12 +60,21 @@
     text-decoration: inherit;
     color: inherit;
   }
+
+  a:link,
+  a:visited,
+  a:active {
+    text-decoration: inherit;
+    color: inherit;
+  }
 </style>
 
 
 <div class="top-bar">
   <div class="nav-left">
-    <h2 class="logo">Care28</h2>
+    <a href="/">
+      <h2 class="logo">Care28</h2>
+    </a>
   </div>
   <div class="nav-center">
     <div class="search-bar">
@@ -79,6 +86,10 @@
       <a class="sign-in-button"
           href="/login">
         Sign In
+      </a>
+    {:else}
+      <a class="log-out-button" href="/">
+        Log out
       </a>
     {/if}
   </div>

@@ -4,10 +4,10 @@
 <script>
   // https://svelte.dev/tutorial/actions
 
-  export let id;
-  export let background;
-  export let hoverbgcolor;
-  export let style, _style;
+  export let id = "";
+  export let background = "";
+  export let hoverbgcolor = "";
+  export let style = "", _style = "";
 
   console.log(hoverbgcolor);
 </script>

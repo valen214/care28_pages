@@ -4,12 +4,15 @@
   import Button from "./components/Button.svelte"
 
   let loading = false;
+  let username = "";
+  let password = "";
 
-  function login(e){
+  async function login(e){
     loading = true;
-    setTimeout(() => {
-      location = location.origin + "/profile";
-    }, 1000);
+
+    
+
+    location = location.origin + "/profile";
   }
   function cancelLoading(e){
     loading = false;
@@ -25,11 +28,11 @@
       </div>
       <div class="row flex-center">
         <input id="login-username" type="text"
-            placeholder="username" />
+            placeholder="username" bind:value={username} />
       </div>
       <div class="row flex-center">
         <input id="login-password" type="password"
-            placeholder="password" />
+            placeholder="password" bind:value={password} />
       </div>
       <div class="row flex-center">
         <Button id="login-button"
@@ -108,7 +111,7 @@
     margin-bottom: 30px;
   }
 
-  #login-button {
+  :global(#login-button) {
     margin-left: 15%;
   }
 
@@ -123,7 +126,7 @@
     display: none;
     opacity: 0.7;
   }
-  #cancel-button {
+  :global(#cancel-button) {
     position: absolute;
     right: 10px;
     bottom: 10px;

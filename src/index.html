@@ -18,9 +18,45 @@
       height: 100%;
     }
   </style>
+  <link rel="stylesheet" href="/pages/bundle.css" />
+  <link rel="modulepreload" href="/pages/Home.js">
 </head>
 
 <body>
-  
+  <script>
+    let injectStyleSheet = (href) => {
+      let link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = href;
+      document.head.appendChild(link);
+    };
+
+    let renderWithFile = async (src) => {
+      injectStyleSheet(src.match(/^([^.]+)\.js$/)[1] + ".css");
+      return import(
+        src
+      ).then(module => {
+        new module.default({
+          target: document.body
+        })
+      });
+    }
+
+    switch(location.pathname){
+    case "/login":
+      renderWithFile("/pages/Login.js");
+      break;
+    case "/register":
+      renderWithFile("/pages/Register.js");
+      break;
+    case "/profile":
+      renderWithFile("/pages/Profile.js");
+      break;
+    default:
+    case "/home":
+      renderWithFile("/pages/Home.js");
+      break;
+    }
+  </script>
 </body>
 </html>
