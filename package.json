@@ -6,7 +6,7 @@
     "dev1": "nodemon --watch src -e js,ts,html,svelte --exec \"npm run build\"",
     "dev": "rollup -c -w",
     "server": "npm run server:dev",
-    "server:dev": "npm run server:start -- --dev --single",
+    "server:dev": "npm run server:start -- --dev --single --cors --host --port 8000",
     "server:start": "sirv public",
     "clean": "npx rimraf -rf public",
     "start": "concurrently -k \"npm:dev\" \"npm:server:dev\"",

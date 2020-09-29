@@ -4,7 +4,7 @@
   import TopBar from "./components/TopBar.svelte";
   import Card from "./components/Card.svelte";
 
-  let loggedin = localStorage.getItem("session");
+  let loggedin = localStorage.getItem("token");
 
   export let products = {
     "1": {

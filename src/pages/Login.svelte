@@ -7,12 +7,58 @@
   let username = "";
   let password = "";
 
+  let showWrongInfoMessage = false;
+
   async function login(e){
     loading = true;
 
-    
+    const USER_API_URL = document.location.origin + "/wp-json/api/v1/user";
+    const TOKEN_API_URL = document.location.origin + "/wp-json/jwt-auth/v1/token";
 
-    location = location.origin + "/profile";
+    let token = fetch(TOKEN_API_URL, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username,
+        password,
+      })
+    });
+
+    let out = await fetch(USER_API_URL, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        action: "login",
+        username,
+        password,
+      }),
+    });
+    if(out.status !== 200){
+      showWrongInfoMessage = true;
+
+      console.error("user login failed:", await out.json());
+      return;
+    }
+    out = await out.json();
+    console.log(out);
+    if(out.body !== "ok"){
+      console.error("unexpected api response")
+      return;
+    }
+    token = await token;
+    if(token.status !== 200){
+      console.error("retrieve JWT failed:", token, await token.json());
+      return;
+    }
+    token = await token.json();
+    console.log("retrieved JWT token:", token);
+
+    localStorage.setItem("token", token.token);
+    document.location.replace(document.location.origin + "/profile");
   }
   function cancelLoading(e){
     loading = false;
@@ -26,13 +72,37 @@
       <div class="row flex-center">
         <h2 class="panel-title">Login to your Account</h2>
       </div>
+      {#if showWrongInfoMessage}
+        <div style="color: red">
+          wrong username or password
+        </div>
+      {/if}
       <div class="row flex-center">
         <input id="login-username" type="text"
-            placeholder="username" bind:value={username} />
+            style={showWrongInfoMessage ? "border-color: rgba(255, 0, 0, 0.2);" : ""}
+            placeholder="username"
+            on:input={() => {
+              if(showWrongInfoMessage){
+                showWrongInfoMessage = false;
+              }
+            }}
+            bind:value={username} />
       </div>
       <div class="row flex-center">
         <input id="login-password" type="password"
-            placeholder="password" bind:value={password} />
+            style={showWrongInfoMessage ? "border-color: rgba(255, 0, 0, 0.2);" : ""}
+            placeholder="password"
+            on:input={() => {
+              if(showWrongInfoMessage){
+                showWrongInfoMessage = false;
+              }
+            }}
+            on:keyup={e => {
+              if(e.code === "Enter"){
+                login();
+              }
+            }}
+            bind:value={password} />
       </div>
       <div class="row flex-center">
         <Button id="login-button"

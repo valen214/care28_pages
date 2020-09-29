@@ -25,7 +25,7 @@
 <!-- when it doesn't work
 https://svelte.dev/repl/ff94ad9fbb18495099f2e6e31b86bc9e?version=3.9.2
 -->
-<div style="{style};{'padding:' + padding}">
+<div style="{'padding:' + padding};{style}">
   <slot name="name"></slot><br />
   <slot name="description"></slot>
 </div>
