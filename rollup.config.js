@@ -61,7 +61,7 @@ const configs = fs.readdirSync(
   let first = i === 0;
   let filename = dirent.name.toString();
   let basename = filename.match(/\/?([^/]+)\.svelte$/)[1];
-  console.assert(path.basename(filename) === basename,
+  console.assert(path.basename(filename) === filename,
       `filename(${filename}) not equals to path.basename()`, path.basename(filename));
   return genConfig({
     name: basename,
