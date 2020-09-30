@@ -10,6 +10,10 @@
   let showWrongInfoMessage = false;
 
   async function login(e){
+    if(loading){
+      console.log("waiting for the previous request to finish");
+      return;
+    }
     loading = true;
 
     const USER_API_URL = document.location.origin + "/wp-json/api/v1/user";
@@ -76,7 +80,7 @@
         <h2 class="panel-title">Login to your Account</h2>
       </div>
       {#if showWrongInfoMessage}
-        <div style="color: red">
+        <div class="error-message">
           wrong username or password
         </div>
       {/if}
@@ -89,6 +93,7 @@
                 showWrongInfoMessage = false;
               }
             }}
+            disabled={loading}
             bind:value={username} />
       </div>
       <div class="row flex-center">
@@ -105,12 +110,14 @@
                 login();
               }
             }}
+            disabled={loading}
             bind:value={password} />
       </div>
       <div class="row flex-center">
         <Button id="login-button"
             background="#08f"
             hoverbgcolor="#ccf"
+            disabled={loading}
             on:click={login}>Login</Button>
         <a id="register-button" href="/register">register</a>
       </div>
@@ -167,6 +174,11 @@
 
   .panel-title {
     margin-bottom: 60px;
+  }
+
+  .error-message {
+    color: red;
+    margin-bottom: 15px;
   }
 
   #login-username,

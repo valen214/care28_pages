@@ -65,12 +65,12 @@
   .search-panel {
     height: 300px;
     width: 75%;
-    background: #08f;
+    background: white;
   }
 
   .district-section {
     height: 100px;
-    color: white;
+    color: black;
     font-size: 30px;
     font-weight: 900;
   }
@@ -92,10 +92,14 @@
     <h2>最受歡迎經紀</h2>
     <span>24 appointments</span><br />
     <span>5 done transactions</span><br />
-    <Button class="top-agent-interact-button">
+    <Button class="top-agent-interact-button"
+        background="#08f"
+        hoverbgcolor="#06d">
       和他/她預約
     </Button>
-    <Button class="top-agent-interact-button">
+    <Button class="top-agent-interact-button"
+        background="#08f"
+        hoverbgcolor="#06d">
       瀏覽他/她的樓盤
     </Button>
   </div>

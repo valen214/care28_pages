@@ -17,7 +17,7 @@
 <button {id} on:click
     class={$$props.class}
     style={[
-      background && `background: ${background}`,
+      background && `--background: ${background}`,
       hoverbgcolor && `--hover-bg-color: ${hoverbgcolor}`,
       style,
       _style,
@@ -28,7 +28,7 @@
 
 <style>
   button {
-    background: white;
+    background: var(--background, white);
     border: none;
     box-shadow: none;
     padding: 15px;
