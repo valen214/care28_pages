@@ -1,6 +1,7 @@
 
 
 <script>
+	import { onMount } from 'svelte';
   import Button from "./Button.svelte";
 
   export let loggedin = false;
@@ -9,6 +10,23 @@
   function logout(){
     localStorage.removeItem("token");
   }
+
+  let topBar;
+  let centerGroup;
+  let topNavObserver;
+
+  onMount(() => {
+    topNavObserver = new IntersectionObserver(() => {
+      console.log("intersect");
+    }, {
+      root: topBar,
+      rootMargin: "0px 0px 0px 0px"
+    });
+
+    topNavObserver.observe(centerGroup);
+
+    console.log(topBar, centerGroup);
+  })
 </script>
 
 <style>
@@ -16,6 +34,12 @@
     background: white;
     display: flex;
     height: 80px;
+    overflow: hidden;
+  }
+
+  .top-bar :globa(.top-bar-button-fix) {
+    margin-bottom: 9px;
+    font-weight: bolder;
   }
 
   .nav-left {
@@ -34,6 +58,9 @@
     justify-content: center;
     align-items: center;
   }
+  .logo > img {
+    height: 100%;
+  }
 
   .nav-center {
     margin: auto 0 auto auto;
@@ -41,6 +68,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
   }
 
   .nav-right {
@@ -60,7 +88,7 @@
 </style>
 
 
-<div class="top-bar">
+<div class="top-bar" bind:this={topBar}>
   <div class="nav-left">
     <a href="/" class="logo">
       <img src="/wp-content/themes/twentytwenty/assets/images/logo.png"
@@ -68,7 +96,7 @@
     </a>
     
   </div>
-  <div class="nav-center">
+  <div class="nav-center" bind:this={centerGroup}>
     <a href="https://care28.com/%E6%96%87%E7%AB%A0%E7%9B%AE%E9%8C%84/?cat=%E8%B2%B7%E6%A8%93">
       <img alt=""
           src="/wp-content/themes/twentytwenty/assets/images/%E8%B2%B7%E6%A8%93%E5%BF%83%E5%BE%97.png">
@@ -77,10 +105,10 @@
       <img alt=""
           src="/wp-content/themes/twentytwenty/assets/images/按揭智慧.png">
     </a>
-    <Button style="margin-bottom:9px;font-weight: bolder;">
+    <Button class="top-bar-button-fix">
       睇樓報告
     </Button>
-    <Button style="margin-bottom:9px;font-weight: bolder;">
+    <Button class="top-bar-button-fix">
       最佳經紀
     </Button>
     <a href="https://care28.com/%e4%bb%80%e9%ba%bd%e6%98%afcare28/">
@@ -91,18 +119,18 @@
   <div class="nav-right">
     {#if !loggedin}
       <Button
-          style="margin-bottom:9px;font-weight: bolder;"
+          class="top-bar-button-fix"
           href="/login">
         登入
       </Button>
     {:else}
       <Button
-          style="margin-bottom:9px;font-weight: bolder;"
+          class="top-bar-button-fix"
           href="/profile">
         Profile
       </Button>
       <Button
-          style="margin-bottom:9px;font-weight: bolder;"
+          class="top-bar-button-fix"
           href="/"
           on:click={logout}>
         登出

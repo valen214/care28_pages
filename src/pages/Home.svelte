@@ -4,10 +4,36 @@
   import TopBar from "./components/TopBar.svelte";
   import Card from "./components/Card.svelte";
   import Button from "./components/Button.svelte";
+  import AgentCard from "./home/AgentCard.svelte";
 
   let loggedin = localStorage.getItem("token");
 
   let showSearchDropDown = false;
+  let activeDistrictIndex = 0;
+
+  export let outstanding_agents = {
+    "1": {
+      name: "Agent 312",
+      rating: 4.6,
+      area: "天水圍",
+      images: [
+        "/wp-content/uploads/avatar/avatar1.png",
+        "/wp-content/uploads/avatar/C7djvi-" +
+        "6bda7a8828925a0a8485037bfef2b2c0d7e88e4eddbb1f465a19a815fe7c2b74.jpg",
+        "/wp-content/uploads/avatar/cx86Z3GqBz-",
+      ]
+    },
+    "2": {
+      name: "Agent 4123",
+      rating: 4.6,
+      area: "西區",
+      images: [
+        "/wp-content/uploads/avatar/avatar2.png",
+        "/wp-content/uploads/avatar/ZUKEFY-" +
+        "1c3d94776234ac83cdd5060c27a36e4980b66345761eaa343888efb3828da650.jpg",
+      ]
+    }
+  };
 
   export let products = {
     "1": {
@@ -36,6 +62,9 @@
       products = {};
     }
   }
+
+  let searchButtonHeight;
+  $: console.log('search buttong height:', searchButtonHeight);
 </script>
 
 <svelte:head>
@@ -45,6 +74,23 @@
 <style>
   .page-content {
     background: #00c771;
+    
+    display: grid;
+    grid-template-areas:
+        "banner banner"
+        "agents reports"
+        "agents reports";
+    grid-template-rows: 600px auto 1fr;
+    grid-template-columns: 40% 1fr;
+  }
+  .banner-container {
+    grid-area: banner;
+  }
+  .outstanding-agents {
+    grid-area: agents;
+  }
+  .reports {
+    grid-area: reports;
   }
 
   .page-content :global(.top-agent-interact-button) {
@@ -57,7 +103,7 @@
 
   .banner-text {
     margin-left: 15%;
-    padding-top: 50px;
+    padding-top: 20px;
 
     font-family: "Arial";
     font-size: 24px;
@@ -67,7 +113,7 @@
   .search-panel {
     height: 300px;
     width: 75%;
-    margin-top: 50px;
+    margin-top: 80px;
     margin-left: 15%;
   }
 
@@ -109,6 +155,56 @@
     font-size: 20px;
     font-weight: 900;
   }
+
+  .outstanding-agents {
+    background: white;
+  }
+
+  .outstanding-agents-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    min-height: 80px;
+    padding: 15px 30px;
+  }
+
+  .outstanding-agents-header > h2 {
+    user-select: none;
+    margin: 0;
+  }
+
+  .outstanding-agents-header > .more {
+    margin: 0 0 0 auto;
+    user-select: none;
+  }
+
+
+
+  .reports {
+    background: white;
+  }
+  .reports-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    min-height: 80px;
+    padding: 15px 30px;
+  }
+  .reports-header > h2 {
+    user-select: none;
+    margin: 0;
+  }
+  .reports-header > .more {
+    margin: 0 0 0 auto;
+    user-select: none;
+  }
+
+
+  .reports-content-container {
+    display: grid;
+  }
 </style>
 
 <TopBar {loggedin} ></TopBar>
@@ -122,9 +218,11 @@
     <div class="search-panel">
       <input type="text" class="banner-search-input"
           style={
-            ( showSearchDropDown ? "border-bottom-left-radius: 0;" : "")
+            ( showSearchDropDown ? "border-bottom-left-radius: 0;" : "") +
+            ( searchButtonHeight ? `height: ${searchButtonHeight}px;` : "" )
           }
       /><Button style="border-radius: 0"
+          bind:clientHeight={searchButtonHeight}
           on:click={() => {
             showSearchDropDown ^= true;
           }}>
@@ -142,9 +240,14 @@
             "search-drop-down "
           }>
           <div class="district-section">
-            區域:
-            {#each "全部 港島 九龍 新界東 新界西".split(" ") as district}
-              <Button>{ district }</Button>
+            地區:
+            {#each "全部 港島 九龍 新界東 新界西".split(" ") as district, i}
+              <Button
+                style={ ( activeDistrictIndex === i ? "background:#428bca" : "" ) }
+                on:click={() => {
+                  activeDistrictIndex = i;
+                }}
+              >{ district }</Button>
             {/each}
           </div>
         </div>
@@ -152,20 +255,29 @@
     </div>
   </div>
   <div style="height: 50px;width: 100%"></div>
-  <div>
-
+  <div class="outstanding-agents">
+    <div class="outstanding-agents-header">
+      <h2>出色經紀</h2>
+      <a href="/#" class="more">
+        更多
+      </a>
+    </div>
+    {#each Object.entries(outstanding_agents) as [ id, { name, rating, area, images }] }
+      <AgentCard
+        { ...{ name, rating, area }}
+        avatar={images[0]}
+        />
+    {/each}
   </div>
-  {#each Object.entries(products) as [ id, { name, description, images }] }
-    <Card class="card" style={"margin:5px;" +
-        `background: center / cover no-repeat url(${images[0]});` +
-        "min-height: 300px; color: white;"
-        }>
-      <span slot="name">
-        {name}
-      </span>
-      <span slot="description">
-        {description}
-      </span>
-    </Card>
-  {/each}
+  <div class="reports">
+    <div class="reports-header">
+      <h2>睇樓報告</h2>
+      <a href="/#" class="more">
+        更多
+      </a>
+    </div>
+    <div class="reports-content-container">
+
+    </div>
+  </div>
 </div>

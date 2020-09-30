@@ -10,6 +10,8 @@
   export let hoverbgcolor = "";
   export let style = "", _style = "";
 
+  export let clientHeight = 0;
+
   console.log(hoverbgcolor);
 </script>
 
@@ -17,6 +19,7 @@
 
 <a { id } { href } on:click
     class={$$props.class}
+    bind:clientHeight
     style={[
       background && `--background: ${background}`,
       hoverbgcolor && `--hover-bg-color: ${hoverbgcolor}`,
