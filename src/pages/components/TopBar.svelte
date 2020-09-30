@@ -43,33 +43,13 @@
     align-items: center;
   }
 
-  .search-bar {
-    height: 100%;
-    padding: 15px;
-  }
-  .search-bar > input {
-    height: 100%;
-    width: 35vw;
-    font-size: 28px;
-  }
-
   .nav-right {
     margin-right: 0;
-    display: inline-flex;
-  }
-
-  .sign-in-button,
-  .profile-button,
-  .log-out-button {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 15px;
-    height: 100%;
-    cursor: pointer;
-    text-decoration: inherit;
-    color: inherit;
   }
+
 
   a:link,
   a:visited,
@@ -97,23 +77,36 @@
       <img alt=""
           src="/wp-content/themes/twentytwenty/assets/images/按揭智慧.png">
     </a>
+    <Button style="margin-bottom:9px;font-weight: bolder;">
+      睇樓報告
+    </Button>
+    <Button style="margin-bottom:9px;font-weight: bolder;">
+      最佳經紀
+    </Button>
+    <a href="https://care28.com/%e4%bb%80%e9%ba%bd%e6%98%afcare28/">
+      <img alt=""
+          src="/wp-content/themes/twentytwenty/assets/images/甚麼是care28.png">
+    </a>
   </div>
   <div class="nav-right">
     {#if !loggedin}
-      <a class="sign-in-button"
+      <Button
+          style="margin-bottom:9px;font-weight: bolder;"
           href="/login">
         登入
-      </a>
+      </Button>
     {:else}
-      <a class="profile-button"
+      <Button
+          style="margin-bottom:9px;font-weight: bolder;"
           href="/profile">
         Profile
-      </a>
-      <a class="log-out-button"
+      </Button>
+      <Button
+          style="margin-bottom:9px;font-weight: bolder;"
           href="/"
           on:click={logout}>
         登出
-      </a>
+      </Button>
     {/if}
   </div>
 </div>

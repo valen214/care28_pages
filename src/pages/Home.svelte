@@ -7,6 +7,8 @@
 
   let loggedin = localStorage.getItem("token");
 
+  let showSearchDropDown = false;
+
   export let products = {
     "1": {
       name: "product NAME",
@@ -42,68 +44,117 @@
 
 <style>
   .page-content {
-    padding: 15px 20px 0;
     background: #00c771;
   }
 
-  .top-agent-section {
-    color: white;
-  }
   .page-content :global(.top-agent-interact-button) {
     font-size: 12px;
   }
 
-  .search-panel-container {
-    height: 500px;
-    background: rgba(0, 0, 0, 0);
+  .banner-container {
+    height: 600px;
+  }
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  .banner-text {
+    margin-left: 15%;
+    padding-top: 50px;
+
+    font-family: "Arial";
+    font-size: 24px;
+    font-weight: bolder;
   }
 
   .search-panel {
     height: 300px;
     width: 75%;
+    margin-top: 50px;
+    margin-left: 15%;
+  }
+
+  .banner-search-input {
+    height: 53px;
+    padding: 0 10px 0px 10px;
+    border: none;
+    border-radius: 15px 0 0 15px;
+    font-size: 24px;
+
+    float: left;
+
+    transition: border-bottom-left-radius 0.5s;
+  }
+
+  .search-drop-down-transition-container {
     background: white;
+    width: 500px;
+    padding-left: 15px;
+
+    transform-origin: top;
+    padding-bottom: 0;
+    transition: padding-bottom 0.5s;
+    
+    overflow: hidden;
+    position: relative;
+  }
+  .search-drop-down-transition-container.show {
+    padding-bottom: 200px;
+  }
+
+  .search-drop-down {
+    position: absolute;
   }
 
   .district-section {
     height: 100px;
     color: black;
-    font-size: 30px;
+    font-size: 20px;
     font-weight: 900;
   }
 </style>
 
 <TopBar {loggedin} ></TopBar>
 <div class="page-content">
-  <div class="search-panel-container">
+  <div class="banner-container"
+      style={"background: center / cover no-repeat " +
+      "url(/wp-content/themes/twentytwenty/assets/images/home-banner-image.png);"}>
+    <div class="banner-text">
+      最好評價的經紀都在 CARE28
+    </div>
     <div class="search-panel">
-      <div>
-
-      </div>
-      <div class="district-section">
-        區域: 全部 港島 九龍 新界東 新界西 
+      <input type="text" class="banner-search-input"
+          style={
+            ( showSearchDropDown ? "border-bottom-left-radius: 0;" : "")
+          }
+      /><Button style="border-radius: 0"
+          on:click={() => {
+            showSearchDropDown ^= true;
+          }}>
+        更多選項
+      </Button><Button
+          background="#ff1a1a"
+          style="border-radius: 0 5px 5px 0;color: white;font-weight: bolder;">
+        網上查詢
+      </Button>
+      <div class={
+            "search-drop-down-transition-container " +
+            ( showSearchDropDown ? "show" : "")
+          }>
+        <div class={
+            "search-drop-down "
+          }>
+          <div class="district-section">
+            區域:
+            {#each "全部 港島 九龍 新界東 新界西".split(" ") as district}
+              <Button>{ district }</Button>
+            {/each}
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="top-agent-section">
-    <h2>最受歡迎經紀</h2>
-    <span>24 appointments</span><br />
-    <span>5 done transactions</span><br />
-    <Button class="top-agent-interact-button"
-        background="#08f"
-        hoverbgcolor="#06d">
-      和他/她預約
-    </Button>
-    <Button class="top-agent-interact-button"
-        background="#08f"
-        hoverbgcolor="#06d">
-      瀏覽他/她的樓盤
-    </Button>
-  </div>
   <div style="height: 50px;width: 100%"></div>
+  <div>
+
+  </div>
   {#each Object.entries(products) as [ id, { name, description, images }] }
     <Card class="card" style={"margin:5px;" +
         `background: center / cover no-repeat url(${images[0]});` +

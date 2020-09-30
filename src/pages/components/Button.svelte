@@ -5,6 +5,7 @@
   // https://svelte.dev/tutorial/actions
 
   export let id = "";
+  export let href = undefined;
   export let background = "";
   export let hoverbgcolor = "";
   export let style = "", _style = "";
@@ -14,7 +15,7 @@
 
 
 
-<button {id} on:click
+<a { id } { href } on:click
     class={$$props.class}
     style={[
       background && `--background: ${background}`,
@@ -23,11 +24,11 @@
       _style,
     ].filter(Boolean).join(";")}>
   <slot></slot>
-</button>
+</a>
 
 
 <style>
-  button {
+  a {
     background: var(--background, white);
     border: none;
     box-shadow: none;
@@ -35,12 +36,20 @@
     font-size: 20px;
     cursor: pointer;
     border-radius: 5px;
+    white-space: nowrap;
+    user-select: none;
+
+    text-decoration: none;
+    color: inherit;
+
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
   }
-  button:hover {
+  a:hover {
     background: var(--hover-bg-color, #ccc);
   }
-  button:active {
+  a:active {
     background: var(--active-bg-color, #aaa);
   }
-
 </style>
