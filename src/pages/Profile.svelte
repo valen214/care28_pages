@@ -2,6 +2,8 @@
 
 <script>
   import TopBar from "./components/TopBar.svelte";
+  import Button from "./components/Button.svelte";
+  import AgentCard from "./home/AgentCard.svelte";
 
   export let token = localStorage.getItem("token");
   export let avatar_url = "";
@@ -85,6 +87,117 @@
   $: console.log(username, usertype);
 
 </script>
+
+<style>
+  :global(*) {
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  :global(html),
+  :global(body) {
+		margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+	}
+
+  .page-root {
+      padding: 15px;
+      display: grid;
+      grid-template-areas:
+              "b f"
+              "g f"
+              "c f";
+      grid-template-rows: 150px auto 1fr;
+      grid-template-columns: 70% 1fr;
+      background: #00c771;
+      height: calc(100% - 80px);
+  }
+  
+  .page-root > .user-bio {
+      grid-area: b;
+  }
+  .page-root > .profile-tabs-group {
+      grid-area: g;
+  }
+  .page-root > .profile-tab-content-container {
+      grid-area: c;
+  }
+  .page-root > .profile-functionals-container {
+      grid-area: f;
+  }
+
+
+  .user-bio {
+      display: flex;
+      flex-direction: "row";
+      margin-bottom: 30px;
+  }
+  
+  .user-bio-avatar-img {
+      object-fit: scale-down;
+      height: 100%;
+      max-width: 100%;
+  }
+  
+  .user-bio-text-container,
+  .user-bio-name,
+  .user-bio-usertype {
+    display: inline-block;
+  }
+
+  .user-bio-text-container {
+    margin-left: 15px;
+  }
+  
+  .user-bio-name {
+    font-size: 45px;
+    margin: 0 0 15px 0;
+  }
+  
+  .user-bio-text-container {
+      display: inline-flex;
+      flex-direction: column;
+  }
+
+
+
+
+
+
+  
+.profile-tabs-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.profile-tab {
+    flex-grow: 1;
+
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+}
+.profile-tab:not(.active) {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0;
+}
+.profile-tab.active {
+    background: rgba(0, 0, 0, 0.05);
+    
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    border-left: 1px solid rgba(0, 0, 0, 0.2);
+    border-right: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 5px 5px 0 0;
+}
+.profile-tab:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+</style>
 
 <TopBar loggedin={true} />
 
@@ -229,7 +342,7 @@
         display: inline-block;
         margin-right: 15px;
         margin-top: 15px;
-        background: #cd2653;
+        background: #428bca;
         color: white;
         font-weight: 600;
         letter-spacing: 0.0333em;
@@ -254,12 +367,12 @@
         Appointment with agent5253 on <i> 23 May 1023 (3 days after)</i>
         <div class="buttons-container">
           
-          <a href="/" class="profile-tab-content-product-button">
+          <Button class="profile-tab-content-product-button">
             Change Appointment Date
-          </a>
-          <a href="/" class="profile-tab-content-product-button">
+          </Button>
+          <Button href="/" class="profile-tab-content-product-button">
             Mention in conversation
-          </a>
+          </Button>
         </div>
     </div>
   </div>
@@ -267,7 +380,7 @@
   <div class="profile-tab-content profile-tab-content-1">
     <style>
       .profile-tab-content-appointment {
-        width: 360px;
+        width: 100%;
         padding: 15px;
         border: 1px solid rgba(0, 0, 0, 0.2);
       }
@@ -288,7 +401,34 @@
   </div>
   {:else}
   <div class="profile-tab-content profile-tab-content-3">
-    Tab 4
+    {#each Object.entries({
+      "1": {
+        name: "Agent 312",
+        rating: 4.6,
+        area: "天水圍",
+        images: [
+          "/wp-content/uploads/avatar/avatar1.png",
+          "/wp-content/uploads/avatar/C7djvi-" +
+          "6bda7a8828925a0a8485037bfef2b2c0d7e88e4eddbb1f465a19a815fe7c2b74.jpg",
+          "/wp-content/uploads/avatar/cx86Z3GqBz-",
+        ]
+      },
+      "2": {
+        name: "Agent 4123",
+        rating: 4.6,
+        area: "西區",
+        images: [
+          "/wp-content/uploads/avatar/avatar2.png",
+          "/wp-content/uploads/avatar/ZUKEFY-" +
+          "1c3d94776234ac83cdd5060c27a36e4980b66345761eaa343888efb3828da650.jpg",
+        ]
+      }
+    }) as [ id, { name, rating, area, images }] }
+      <AgentCard
+        { ...{ name, rating, area }}
+        avatar={images[0]}
+        />
+    {/each}
   </div>
   {/if}
 {/if}
@@ -306,107 +446,3 @@
 
 
 </div>
-
-<style>
-  :global(*) {
-    box-sizing: border-box;
-  }
-  :global(body) {
-		margin: 0;
-	}
-
-  .page-root {
-      padding: 15px;
-      display: grid;
-      grid-template-areas:
-              "b f"
-              "g f"
-              "c f";
-      grid-template-rows: 150px auto 1fr;
-      grid-template-columns: 70% 1fr;
-  }
-  
-  .page-root > .user-bio {
-      grid-area: b;
-  }
-  .page-root > .profile-tabs-group {
-      grid-area: g;
-  }
-  .page-root > .profile-tab-content-container {
-      grid-area: c;
-  }
-  .page-root > .profile-functionals-container {
-      grid-area: f;
-  }
-
-
-  .user-bio {
-      display: flex;
-      flex-direction: "row";
-      margin-bottom: 30px;
-  }
-  
-  .user-bio-avatar-img {
-      object-fit: scale-down;
-      height: 100%;
-      max-width: 100%;
-  }
-  
-  .user-bio-text-container,
-  .user-bio-name,
-  .user-bio-usertype {
-    display: inline-block;
-  }
-
-  .user-bio-text-container {
-    margin-left: 15px;
-  }
-  
-  .user-bio-name {
-    font-size: 45px;
-    margin: 0 0 15px 0;
-  }
-  
-  .user-bio-text-container {
-      display: inline-flex;
-      flex-direction: column;
-  }
-
-
-
-
-
-
-  
-.profile-tabs-group {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-}
-
-.profile-tab {
-    flex-grow: 1;
-
-    padding: 8px;
-    display: flex;
-    justify-content: center;
-    cursor: pointer;
-    user-select: none;
-}
-.profile-tab:not(.active) {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 0;
-}
-.profile-tab.active {
-    background: rgba(0, 0, 0, 0.05);
-    
-    border-top: 1px solid rgba(0, 0, 0, 0.2);
-    border-left: 1px solid rgba(0, 0, 0, 0.2);
-    border-right: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 5px 5px 0 0;
-}
-.profile-tab:hover {
-    background: rgba(0, 0, 0, 0.1);
-}
-
-</style>

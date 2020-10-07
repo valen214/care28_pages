@@ -26,6 +26,9 @@ const genConfig = ({
       name: input || "app",
       dir: 'public/pages'
     },
+    watch: process.env.ROLLUP_WATCH && {
+      buildDelay: 200,
+    },
     plugins: [
       svelte({
         dev: !production,
@@ -34,8 +37,9 @@ const genConfig = ({
         }),
         preprocess: svelte_preprocess(),
       }),
-      typescript(),
-      commonjs(),
+      commonjs({
+        sourceMap: false
+      }),
       resolve({
         browser: true,
         dedupe: ['svelte']
