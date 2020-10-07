@@ -8,6 +8,7 @@
     "server": "npm run server:dev",
     "server:dev": "npm run server:start -- --dev --single --cors --host --port 8000",
     "server:start": "sirv public",
+    "upload": "./.local/upload",
     "clean": "npx rimraf -rf public",
     "start": "concurrently -k \"npm:dev\" \"npm:server:dev\"",
     "validate": "svelte-check"
