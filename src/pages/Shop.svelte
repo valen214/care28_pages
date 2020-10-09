@@ -70,11 +70,16 @@
 
 <TopBar loggedin={true} />
 <div class="root">
-  <Bio
-    name={display_name}
-    avatar={avatarSrc}
-    description={description}
-  />
+  <div class="top-panel">
+
+    <Bio
+      name={display_name}
+      avatar={avatarSrc}
+      description={description}
+    />
+
+    <h1>SHOP</h1>
+  </div>
   <div>
     <h2>貨架</h2>
     {#each products as product}
