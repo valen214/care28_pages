@@ -1,6 +1,7 @@
 
 
 <script>
+  import { ORIGIN } from "./api";
   import Button from "./components/Button.svelte"
 
   let loading = false;
@@ -16,8 +17,8 @@
     }
     loading = true;
 
-    const USER_API_URL = document.location.origin + "/wp-json/api/v1/user";
-    const TOKEN_API_URL = document.location.origin + "/wp-json/jwt-auth/v1/token";
+    const USER_API_URL = ORIGIN + "/wp-json/api/v1/user";
+    const TOKEN_API_URL = ORIGIN + "/wp-json/jwt-auth/v1/token";
 
     let token = fetch(TOKEN_API_URL, {
       method: "POST",

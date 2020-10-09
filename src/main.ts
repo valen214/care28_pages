@@ -40,7 +40,7 @@ function main1(){
   });
 }
 
-main1();
+main();
 export default {};
 /*/
 const app = new App({
