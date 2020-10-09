@@ -40,6 +40,7 @@ const genConfig = ({
       commonjs({
         sourceMap: false
       }),
+      typescript(),
       resolve({
         browser: true,
         dedupe: ['svelte']
