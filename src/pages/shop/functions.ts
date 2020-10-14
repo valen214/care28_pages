@@ -34,11 +34,40 @@ export function fetchProducts(setProducts: setProductsCallback){
   ])
 }
 
-export type setAppointmentCallback = (appointments: Array<Appointment>) => void;
-export function fetchAppointments(setAppointments: setAppointmentCallback){
+export type TSetAppointmentCallback = (appointments: Array<Appointment>) => void;
+export function fetchAppointments(setAppointments: TSetAppointmentCallback){
   setAppointments([
     {
-      client_name: "abcdef"
+      client_name: "abcdef",
+      area: "將軍澳",
+      estate: "SEA TO SKY",
+      rating_attitude: 5.0,
+      rating_info: 4.0,
+      rating_time: 4.0,
+      rating_property: 4.0,
+      rating_overall: 4.2,
+      feedback: "nice person, gives you warm feeling"
+    }, {
+      client_name: "Terry",
+      area: "將軍澳",
+      estate: "SEA TO SKY",
+      rating_attitude: 4.2,
+      rating_info: 4.2,
+      rating_time: 4.2,
+      rating_property: 4.2,
+      rating_overall: 4.2,
+      feedback: "good"
     }
   ])
+}
+
+
+
+export function getShopIdFromUrl(){
+  let matchResult = location.href.match(/\/shop\/(\d+)(\?|$)/);
+  if(matchResult){
+    return parseInt(matchResult[1]) || "";
+  } else{
+
+  }
 }

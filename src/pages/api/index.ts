@@ -1,8 +1,15 @@
 
+
+const PRODUCTION = !document.location.href.includes("localhost");
 export const ORIGIN = (
-    document.location.href.includes("localhost") ?
-    "http://18.163.56.65" : document.location.origin
+  !PRODUCTION ? "http://18.163.56.65" : document.location.origin
 );
+
+export function onDev(func: () => void){
+  if(!PRODUCTION){
+    func();
+  }
+}
 
 
 
@@ -22,6 +29,14 @@ export type Appointment = {
   client_id?: number
   agent_id?: number
   client_name?: string
+  area?: string
+  estate?: string
+  rating_attitude?: number
+  rating_info?: number
+  rating_time?: number
+  rating_property?: number
+  rating_overall?: number
+  feedback?: string
 };
 
 export async function makeApiInfoCall(body: object){

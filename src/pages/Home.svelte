@@ -6,8 +6,6 @@
   import Button from "./components/Button.svelte";
   import AgentCard from "./home/AgentCard.svelte";
 
-  let loggedin = localStorage.getItem("token");
-
   let showSearchDropDown = false;
   let activeDistrictIndex = 0;
 
@@ -207,7 +205,7 @@
   }
 </style>
 
-<TopBar {loggedin} ></TopBar>
+<TopBar></TopBar>
 <div class="page-content">
   <div class="banner-container"
       style={"background: center / cover no-repeat " +

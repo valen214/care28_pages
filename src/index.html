@@ -31,23 +31,41 @@
       document.head.appendChild(link);
     };
 
-    let renderWithFile = async (src) => {
+    let renderWithFile = async (src, props) => {
       injectStyleSheet(src.match(/^([^.]+)\.js$/)[1] + ".css");
       return import(
         src
       ).then(module => {
         new module.default({
-          target: document.body
+          target: document.body,
+          props
         })
       });
     }
 
-    switch(location.pathname){
+    let match = "";
+    if(location.pathname.match(/\/shop\/\d+($|\?)/)){
+      match = "/shop";
+    }
+
+    switch(match || location.pathname){
     case "/login":
       renderWithFile("/pages/Login.js");
       break;
     case "/register":
       renderWithFile("/pages/Register.js");
+      break;
+    case "/shop":
+      renderWithFile("/pages/Shop.js", {
+        id: (function(){
+            let matchResult = location.href.match(/\/shop\/(\d+)(\?|$)/);
+            if(matchResult){
+              return parseInt(matchResult[1]) || "";
+            } else{
+
+            }
+          })()
+      });
       break;
     case "/profile":
       renderWithFile("/pages/Profile.js");

@@ -8,21 +8,24 @@
   export let href = undefined;
   export let background = "";
   export let hoverbgcolor = "";
+  export let activebgcolor = "";
   export let style = "", _style = "";
+  export let className = "";
 
   export let clientHeight = 0;
-
-  console.log(hoverbgcolor);
 </script>
 
 
 
 <a { id } { href } on:click
-    class={$$props.class}
+    class={[className].join(" ")}
     bind:clientHeight
+    on:mouseover
+    on:mouseleave
     style={[
       background && `--background: ${background}`,
       hoverbgcolor && `--hover-bg-color: ${hoverbgcolor}`,
+      activebgcolor && `--active-bg-color: ${activebgcolor}`,
       style,
       _style,
     ].filter(Boolean).join(";")}>

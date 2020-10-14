@@ -41,8 +41,10 @@
     <div>
       <h3>{name}</h3> 的商店
     </div>
-    <div>
-      <h3>簡介:</h3> { description }
-    </div>
+    {#if description }
+      <div>
+        <h3>簡介:</h3> { description }
+      </div>
+    {/if}
   </div>
 </div>
