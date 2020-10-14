@@ -15,15 +15,10 @@
     fetchAppointments,
     getShopIdFromUrl,
   } from "./shop/functions";
-import AgentCard from "./home/AgentCard.svelte";
-import Card from "./components/Card.svelte";
 
   export let id = getShopIdFromUrl() || "";
   let current_user_id = getCurrentUserID();
   let edit_mode = false;
-  console.log("id:", id);
-
-  $: console.log("IDDDDD:", id);
 
   let display_name;
   let shop_ID;
@@ -33,44 +28,72 @@ import Card from "./components/Card.svelte";
   let products;
   let old_products;
   let appointments;
-  onDev(() => {
-    if(!id){
-      id = 4;
-    }
-    if(!current_user_id){
-      current_user_id = 4;
-    }
-  });
+  
+  $: (async () => {
+    console.log(
+        "id:", id,
+        "shop id:", shop_ID,
+        "current_user_id:", await current_user_id
+    );
+  })();
 
-  makeApiInfoCall({
-    type: "query_user",
-    fields: [
-      "user_nicename",
-      "display_name",
-      "usertype",
-      "shop_ID",
-      "avatar",
-    ]
-  }).then(res => {
-    return res.json();
-  }).then((info) => {
-    let {
-      display_name: _display_name,
-      shop_ID: _shop_ID,
-      avatar: _avatar
-    } = info;
-    display_name = _display_name;
-    shop_ID = _shop_ID;
-    avatarSrc = ORIGIN + "/wp-content/uploads/avatar/" + _avatar;
-  });
+  
+  async function init(){
+    makeApiInfoCall({
+      type: "query_user",
+      id,
+      fields: [
+        "user_nicename",
+        "display_name",
+        "usertype",
+        "shop_ID",
+        "avatar",
+      ]
+    }).then(res => {
+      return res.json();
+    }).then((info) => {
+      let {
+        display_name: _display_name,
+        shop_ID: _shop_ID,
+        avatar: _avatar
+      } = info;
+      display_name = _display_name;
+      shop_ID = _shop_ID;
+      avatarSrc = ORIGIN + "/wp-content/uploads/avatar/" + _avatar;
 
-  fetchProducts(_products => {
-    products = _products;
-  });
-  fetchAppointments(_appointments => {
-    appointments = _appointments;
-  });
+      console.log("shop id:", shop_ID);
 
+    }).then(() => {
+      if(shop_ID){
+        fetchProducts(
+          shop_ID,
+          _products => {
+            products = _products;
+          }
+        );
+
+        fetchAppointments(_appointments => {
+          appointments = _appointments;
+        });
+      } else{
+        location.replace(location.origin + "/404");
+      }
+    });
+  }
+
+  
+  if(id){
+    init();
+  } else{
+    current_user_id.then(curr_id => {
+      if(curr_id){
+        id = curr_id;
+        init();
+      } else{
+        location.replace(location.origin + "/404");
+      }
+    });
+  }
 
 </script>
 
@@ -122,7 +145,7 @@ import Card from "./components/Card.svelte";
   }
 </style>
 
-<TopBar loggedin={true} />
+<TopBar loggedin={!!current_user_id} />
 <div class="root">
   <div class="top-panel">
     <div class="top-panel-left-group">
@@ -179,15 +202,29 @@ import Card from "./components/Card.svelte";
         </Button>
       {/if}
     </div>
-    {#each products as product}
-      <Product edit={edit_mode} bind:product />
-    {/each}
+    {#if Array.isArray(products)}
+      {#each products as product}
+        <Product edit={edit_mode} bind:product />
+      {:else}
+        <div style="margin-bottom: 50px">
+          未有任何產品
+        </div>
+      {/each}
+    {:else}
+      Loading
+    {/if}
   </div>
   <div>
     <h2>約見評價</h2>
-    {#each appointments as appointment}
-      <Appointment { ...appointment } />
-    {/each}
+    {#if Array.isArray(appointments)}
+      {#each appointments as appointment}
+        <Appointment { ...appointment } />
+      {:else}
+        未有約見評價
+      {/each}
+    {:else}
+      Loading
+    {/if}
   </div>
 </div>
 

@@ -2,10 +2,53 @@
 
 
 import type { Product, Appointment } from "../api";
+import { makeApiInfoCall, IMAGE_BASE_PATH } from "../api";
 
 type setProductsCallback = (products: Array<Product>) => void;
 
-export function fetchProducts(setProducts: setProductsCallback){
+export async function fetchProducts(
+    id: number,
+    setProducts: setProductsCallback
+){
+  try{
+    let res = await makeApiInfoCall({
+      type: "query_shop",
+      id,
+      "products": [
+        "ID",
+        "name",
+        "description",
+        "thumbnail",
+        "area",
+        "estate",
+        "price",
+        "status",
+        "lastUpdated"
+      ]
+    });
+    let result = await res.json();
+    console.log(result);
+
+    setProducts(
+      Object.values(
+        result.products
+      ).map(product => {
+        product["id"] = parseInt(product["ID"]);
+        delete product["ID"];
+
+        if(product["thumbnail"]?.startsWith?.("http")){
+
+        } else{
+          product["thumbnail"] = IMAGE_BASE_PATH + product["thumbnail"];
+        }
+
+        return product;
+      })
+    );
+  } catch(e){
+    console.error("fetchProducts failed:", e);
+  }
+  return;
 
   setProducts([
     {

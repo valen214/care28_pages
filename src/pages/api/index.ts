@@ -54,3 +54,6 @@ export async function makeApiInfoCall(body: object){
     body: JSON.stringify(body)
   });
 }
+
+
+export const IMAGE_BASE_PATH = ORIGIN + "/wp-content/uploads/";

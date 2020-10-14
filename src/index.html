@@ -49,12 +49,17 @@
     }
 
     switch(match || location.pathname){
+    case "/404":
+      renderWithFile("/pages/404.js");
+      break;
     case "/login":
       renderWithFile("/pages/Login.js");
       break;
     case "/register":
       renderWithFile("/pages/Register.js");
       break;
+    case "/profile":
+      // renderWithFile("/pages/Profile.js");
     case "/shop":
       renderWithFile("/pages/Shop.js", {
         id: (function(){
@@ -66,9 +71,6 @@
             }
           })()
       });
-      break;
-    case "/profile":
-      renderWithFile("/pages/Profile.js");
       break;
     default:
     case "/home":
