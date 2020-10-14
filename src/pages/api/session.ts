@@ -4,16 +4,17 @@
 
 import { makeApiInfoCall, ORIGIN } from "./index";
 
-export async function getCurrentUserID(){
-  let res = await makeApiInfoCall({
-    type: "query_user",
-    fields: [
-      "ID"
-    ]
-  })
-  let result = await res.json();
-  console.log(result);
-  return result.ID;
+export function getCurrentUserID(){
+  let id = localStorage.getItem("userID");
+  if(id){
+    return parseInt(id) || null;
+  }
+  return null;
+}
+
+export function logout(){
+  localStorage.removeItem("token");
+  localStorage.removeItem("userID");
 }
 
 

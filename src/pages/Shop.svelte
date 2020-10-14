@@ -14,11 +14,13 @@
     fetchProducts,
     fetchAppointments,
     getShopIdFromUrl,
+    saveProducts
   } from "./shop/functions";
 
   export let id = getShopIdFromUrl() || "";
   let current_user_id = getCurrentUserID();
   let edit_mode = false;
+  let loading = true;
 
   let display_name;
   let shop_ID;
@@ -31,11 +33,17 @@
   
   $: (async () => {
     console.log(
-        "id:", id,
+        "id:", id, typeof id,
         "shop id:", shop_ID,
-        "current_user_id:", await current_user_id
+        "current_user_id:", current_user_id, typeof current_user_id
     );
   })();
+
+  async function saveEdit(){
+    edit_mode = false;
+    saveProducts(products);
+
+  }
 
   
   async function init(){
@@ -78,21 +86,19 @@
       } else{
         location.replace(location.origin + "/404");
       }
+
+      loading = false;
     });
   }
 
   
   if(id){
     init();
+  } else if(current_user_id){
+    id = current_user_id;
+    init();
   } else{
-    current_user_id.then(curr_id => {
-      if(curr_id){
-        id = curr_id;
-        init();
-      } else{
-        location.replace(location.origin + "/404");
-      }
-    });
+    location.replace(location.origin + "/404");
   }
 
 </script>
@@ -105,6 +111,20 @@
   .root {
     padding: 15px;
     font-family: Arial, Helvetica, sans-serif;
+    position: relative;
+  }
+
+  .loading-panel {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1000;
+    background: white;
   }
 
   .top-panel {
@@ -145,14 +165,20 @@
   }
 </style>
 
-<TopBar loggedin={!!current_user_id} />
+<TopBar />
 <div class="root">
+  {#if loading}
+    <div class="loading-panel">
+      loading...
+    </div>
+  {/if}
   <div class="top-panel">
     <div class="top-panel-left-group">
       <Bio
         name={display_name}
         avatar={avatarSrc}
         description={description}
+        owner={current_user_id === id}
       />
 
       <h1>SHOP</h1>
@@ -162,9 +188,7 @@
         {#if current_user_id === id }
           {#if edit_mode}
             <Button className="shop-action-button"
-                on:click={() => {
-                  edit_mode = false;
-                }}>
+                on:click={saveEdit}>
               Save Edit
             </Button>
             <Button className="shop-action-button"

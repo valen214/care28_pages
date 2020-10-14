@@ -4,6 +4,8 @@
   export let name;
   export let avatar;
   export let description;
+
+  export let owner = false;
 </script>
 
 <style>
@@ -14,7 +16,7 @@
   }
   .bio img {
     height: 100%;
-    max-width: 15%;
+    max-width: 300px;
     object-fit: cover;
   }
   .bio .info {
@@ -27,7 +29,6 @@
     padding-top: 15px;
   }
 
-  .info h2,
   .info h3 {
     margin: 0;
     display: inline;
@@ -37,9 +38,8 @@
 <div class="bio">
   <img src={avatar} alt="avatar" />
   <div class="info">
-    <h2>MEMBER: Agent</h2>
     <div>
-      <h3>{name}</h3> 的商店
+      <h3>{name}{ owner ? " (您)" : ""}</h3> 的商店
     </div>
     {#if description }
       <div>

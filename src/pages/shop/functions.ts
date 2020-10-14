@@ -77,6 +77,11 @@ export async function fetchProducts(
   ])
 }
 
+
+export async function saveProducts(){
+  
+}
+
 export type TSetAppointmentCallback = (appointments: Array<Appointment>) => void;
 export function fetchAppointments(setAppointments: TSetAppointmentCallback){
   setAppointments([

@@ -205,7 +205,7 @@
   }
 </style>
 
-<TopBar></TopBar>
+<TopBar />
 <div class="page-content">
   <div class="banner-container"
       style={"background: center / cover no-repeat " +

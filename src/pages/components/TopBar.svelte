@@ -3,13 +3,10 @@
 <script>
 	import { onMount } from 'svelte';
   import Button from "./Button.svelte";
+  import { logout } from "../api/session";
 
   export let loggedin = !!localStorage.getItem("token");
   $: console.log("loggedin:", loggedin, typeof loggedin);
-
-  function logout(){
-    localStorage.removeItem("token");
-  }
 
   let topBar;
   let centerGroup;

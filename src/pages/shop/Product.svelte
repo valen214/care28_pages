@@ -5,6 +5,7 @@
   import AreaSelect from "../components/AreaSelect.svelte";
 
   export let edit;
+  let file_input;
 
   export let product;
   $: ({
@@ -21,9 +22,12 @@
     column-gap: 15px;
   }
 
-  .product img {
+  .product .thumbnail {
     width: 16%;
     object-fit: cover;
+  }
+  .product .thumbnail.edit {
+    cursor: pointer;
   }
 
   .product > .text-input-field {
@@ -46,11 +50,24 @@
     font-size: 1.5em;
     padding-top: 11px;
   }
+
+
+  .product > span.empty {
+    border: 1px solid rgba(255, 0, 0, 0.5);
+  }
 </style>
 
 <div class="product">
   {#if edit}
-    <img src={thumbnail} alt="thumbnail" />
+    <input type="file" style="display:none" bind:this={file_input}/>
+    <img src={thumbnail}
+        class="thumbnail edit"
+        alt="thumbnail"
+        on:click={() => {
+          if(file_input){
+            file_input.click();
+          }
+        }} />
     <AreaSelect
         className="area-input-button"
         bind:value={ product.area } />
@@ -65,11 +82,12 @@
     </select>
     <input class="text-input-field" bind:value={ product.lastUpdated } />
   {:else}
-    <img src={thumbnail} alt="thumbnail" />
-    <span>{ area }</span>
-    <span>{ estate }</span>
-    <span>{ price }</span>
-    <span>{ status }</span>
-    <span>{ lastUpdated }</span>
+    <img class="thumbnail"
+        src={thumbnail} alt="thumbnail" />
+    <span class:empty={!area} >{ area || "" }</span>
+    <span class:empty={!estate} >{ estate || ""  }</span>
+    <span class:empty={!price} >{ price || ""  }</span>
+    <span class:empty={!status} >{ status || ""  }</span>
+    <span class:empty={!lastUpdated} >{ lastUpdated || ""  }</span>
   {/if}
 </div>
