@@ -3,12 +3,12 @@
 
 <script>
   import TopBar from "./components/TopBar.svelte";
-  import { ORIGIN } from "./api";
+  import { REMOTE_ORIGIN } from "./api";
 
 </script>
 
 <svelte:head>
-  <base href={ORIGIN} />
+  <base href={REMOTE_ORIGIN} />
 </svelte:head>
 
 <TopBar />

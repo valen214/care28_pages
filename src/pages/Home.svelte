@@ -5,33 +5,16 @@
   import Card from "./components/Card.svelte";
   import Button from "./components/Button.svelte";
   import AgentCard from "./home/AgentCard.svelte";
+  import { getOutstandingAgents } from "./home/functions";
+  import { REMOTE_ORIGIN } from "./api";
 
   let showSearchDropDown = false;
   let activeDistrictIndex = 0;
 
-  export let outstanding_agents = {
-    "1": {
-      name: "Agent 312",
-      rating: 4.6,
-      area: "天水圍",
-      images: [
-        "/wp-content/uploads/avatar/avatar1.png",
-        "/wp-content/uploads/avatar/C7djvi-" +
-        "6bda7a8828925a0a8485037bfef2b2c0d7e88e4eddbb1f465a19a815fe7c2b74.jpg",
-        "/wp-content/uploads/avatar/cx86Z3GqBz-",
-      ]
-    },
-    "2": {
-      name: "Agent 4123",
-      rating: 4.6,
-      area: "西區",
-      images: [
-        "/wp-content/uploads/avatar/avatar2.png",
-        "/wp-content/uploads/avatar/ZUKEFY-" +
-        "1c3d94776234ac83cdd5060c27a36e4980b66345761eaa343888efb3828da650.jpg",
-      ]
-    }
-  };
+  export let outstanding_agents = {};
+  getOutstandingAgents(agents => {
+    outstanding_agents = agents;
+  });
 
   export let products = {
     "1": {
@@ -209,7 +192,8 @@
 <div class="page-content">
   <div class="banner-container"
       style={"background: center / cover no-repeat " +
-      "url(/wp-content/themes/twentytwenty/assets/images/home-banner-image.png);"}>
+      "url(" + REMOTE_ORIGIN +
+      "/wp-content/themes/twentytwenty/assets/images/home-banner-image.png);"}>
     <div class="banner-text">
       最好評價的經紀都在 CARE28
     </div>
@@ -262,9 +246,10 @@
     </div>
     {#each Object.entries(outstanding_agents) as [ id, { name, rating, area, images }] }
       <AgentCard
-        { ...{ name, rating, area }}
-        avatar={images[0]}
-        />
+        { ...{ id, name, rating, area }}
+        avatar={images?.[0]} />
+    {:else}
+      Loading...
     {/each}
   </div>
   <div class="reports">

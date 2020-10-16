@@ -3,7 +3,7 @@
 
 
 <script>
-  import { makeApiInfoCall, ORIGIN, onDev } from "./api";
+  import { makeApiInfoCall, REMOTE_ORIGIN, onDev, LOCAL_ORIGIN } from "./api";
   import { getCurrentUserID } from "./api/session";
   import TopBar from "./components/TopBar.svelte";
   import Button from "./components/Button.svelte";
@@ -67,7 +67,7 @@
       } = info;
       display_name = _display_name;
       shop_ID = _shop_ID;
-      avatarSrc = ORIGIN + "/wp-content/uploads/avatar/" + _avatar;
+      avatarSrc = REMOTE_ORIGIN + "/wp-content/uploads/avatar/" + _avatar;
 
       console.log("shop id:", shop_ID);
 
@@ -104,7 +104,7 @@
 </script>
 
 <svelte:head>
-  <base href={ORIGIN} />
+  <base href={REMOTE_ORIGIN} />
 </svelte:head>
 
 <style>
@@ -209,7 +209,11 @@
           {/if}
           <Button className="shop-action-button">View Page as client</Button>
         {:else}
-          <Button className="shop-action-button">約見 Appointment</Button>
+          <Button
+              className="shop-action-button"
+              href={LOCAL_ORIGIN + "/appointment?agent_id=" + id}>
+            約見 Appointment
+          </Button>
         {/if}
       </div>
     </div>

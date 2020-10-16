@@ -2,7 +2,7 @@
 
 
 
-import { makeApiInfoCall, ORIGIN } from "./index";
+import { makeApiInfoCall, REMOTE_ORIGIN } from "./index";
 
 export function getCurrentUserID(){
   let id = localStorage.getItem("userID");
@@ -29,8 +29,8 @@ export async function login(
   }
   loading = true;
 
-  const USER_API_URL = ORIGIN + "/wp-json/api/v1/user";
-  const TOKEN_API_URL = ORIGIN + "/wp-json/jwt-auth/v1/token";
+  const USER_API_URL = REMOTE_ORIGIN + "/wp-json/api/v1/user";
+  const TOKEN_API_URL = REMOTE_ORIGIN + "/wp-json/jwt-auth/v1/token";
 
   let token_promise = fetch(TOKEN_API_URL, {
     method: "POST",

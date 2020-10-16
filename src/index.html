@@ -46,9 +46,14 @@
     let match = "";
     if(location.pathname.match(/\/shop\/\d+($|\?)/)){
       match = "/shop";
+    } else if(location.pathname.match(/\/appointment/)){
+      match = "/appointment";
     }
 
     switch(match || location.pathname){
+    case "/appointment":
+      renderWithFile("/pages/Appointment.js");
+      break;
     case "/404":
       renderWithFile("/pages/404.js");
       break;

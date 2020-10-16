@@ -1,9 +1,10 @@
 
 
 const PRODUCTION = !document.location.href.includes("localhost");
-export const ORIGIN = (
-  !PRODUCTION ? "http://18.163.56.65" : document.location.origin
+export const REMOTE_ORIGIN = (
+  PRODUCTION ? document.location.origin : "http://18.163.56.65"
 );
+export const LOCAL_ORIGIN = document.location.origin;
 
 export function onDev(func: () => void){
   if(!PRODUCTION){
@@ -11,7 +12,12 @@ export function onDev(func: () => void){
   }
 }
 
-
+export type Agent = {
+  name?: string
+  rating?: number
+  area?: string
+  images?: string[]
+}
 
 export type Product = {
   id?: number
@@ -45,8 +51,24 @@ export async function makeApiInfoCall(body: object){
     body["token"] = token;
   }
 
-  console.log(body);
-  return fetch(ORIGIN + "/wp-json/api/v1/info", {
+  console.log("makeApiInfoCall:", body);
+  return fetch(REMOTE_ORIGIN + "/wp-json/api/v1/info", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body)
+  });
+}
+
+export async function makeApiAppointmentCall(body: object){
+  let token = localStorage.getItem("token");
+  if(token){
+    body["token"] = token;
+  }
+
+  console.log("makeApiAppointmentCall:", body);
+  return fetch(REMOTE_ORIGIN + "/wp-json/api/v1/appointments", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -56,4 +78,5 @@ export async function makeApiInfoCall(body: object){
 }
 
 
-export const IMAGE_BASE_PATH = ORIGIN + "/wp-content/uploads/";
+export const IMAGE_BASE_PATH = REMOTE_ORIGIN + "/wp-content/uploads/";
+export const AVATAR_BASE_PATH = REMOTE_ORIGIN + "/wp-content/uploads/avatar/";

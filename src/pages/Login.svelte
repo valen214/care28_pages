@@ -1,7 +1,6 @@
 
 
 <script>
-  import { ORIGIN } from "./api";
   import Button from "./components/Button.svelte"
   import { login as __login } from "./api/session";
 

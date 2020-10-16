@@ -2,10 +2,13 @@
 <script lang="ts">
   import Button from "../components/Button.svelte";
 
+  export let id: number | string = '';
   export let avatar: string = "";
   export let name: string = "";
   export let area: string = "";
   export let rating: number = NaN;
+
+  $: console.log("avatar:", avatar);
 </script>
 
 <div class="agent-card">
@@ -22,7 +25,12 @@
     <div>
       評分: { rating }
     </div>
-    <Button style="white-space: initial">
+    <Button
+        style="white-space: initial"
+        href={ id ? ( "/shop/" + id ) : undefined }
+        on:click={() => {
+          document.location.replace(location.origin + "/shop/" + id);
+        }}>
       看有關{ name }的報告
     </Button>
   </div>

@@ -3,6 +3,7 @@
 <script>
 	import { onMount } from 'svelte';
   import Button from "./Button.svelte";
+  import { LOCAL_ORIGIN, REMOTE_ORIGIN } from "../api";
   import { logout } from "../api/session";
 
   export let loggedin = !!localStorage.getItem("token");
@@ -107,8 +108,9 @@
 
 <div class="top-bar" bind:this={topBar}>
   <div class="nav-left">
-    <a href="/" class="logo">
-      <img src="/wp-content/themes/twentytwenty/assets/images/logo.png"
+    <a href={LOCAL_ORIGIN + "/"} class="logo">
+      <img src={ REMOTE_ORIGIN +
+            "/wp-content/themes/twentytwenty/assets/images/logo.png" }
           alt="logo" />
     </a>
     
