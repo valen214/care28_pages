@@ -118,13 +118,15 @@
   <div class="nav-center" bind:this={centerGroup}>
     <a href="https://care28.com/%E6%96%87%E7%AB%A0%E7%9B%AE%E9%8C%84/?cat=%E8%B2%B7%E6%A8%93"
         class="top-bar-image-link-fix">
-      <img alt=""
-          src="/wp-content/themes/twentytwenty/assets/images/%E8%B2%B7%E6%A8%93%E5%BF%83%E5%BE%97.png">
+      <img alt="" src={REMOTE_ORIGIN +
+          "/wp-content/themes/twentytwenty/assets/images/" +
+          "%E8%B2%B7%E6%A8%93%E5%BF%83%E5%BE%97.png"}>
     </a>
     <a class="top-bar-image-link-fix"
         href="https://care28.com/%E6%96%87%E7%AB%A0%E7%9B%AE%E9%8C%84/?cat=%E6%8C%89%E6%8F%AD">
       <img alt=""
-          src="/wp-content/themes/twentytwenty/assets/images/按揭智慧.png">
+          src={REMOTE_ORIGIN +
+              "/wp-content/themes/twentytwenty/assets/images/按揭智慧.png"}>
     </a>
     <Button className="top-bar-button-fix">
       <i class="arrow"></i>睇樓報告
@@ -134,25 +136,26 @@
     </Button>
     <a href="https://care28.com/%e4%bb%80%e9%ba%bd%e6%98%afcare28/">
       <img alt=""
-          src="/wp-content/themes/twentytwenty/assets/images/甚麼是care28.png">
+          src={REMOTE_ORIGIN +
+            "/wp-content/themes/twentytwenty/assets/images/甚麼是care28.png"}>
     </a>
   </div>
   <div class="nav-right">
     {#if !loggedin}
       <Button
           className="top-bar-button-fix"
-          href="/login">
+          href={LOCAL_ORIGIN + "/login"}>
         登入
       </Button>
     {:else}
       <Button
           className="top-bar-button-fix"
-          href="/profile">
+          href={LOCAL_ORIGIN + "/profile"}>
         Profile
       </Button>
       <Button
           className="top-bar-button-fix"
-          href="/"
+          href={LOCAL_ORIGIN + "/"}
           on:click={logout}>
         登出
       </Button>

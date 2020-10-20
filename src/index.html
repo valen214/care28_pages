@@ -18,7 +18,9 @@
       height: 100%;
     }
   </style>
-  <link rel="stylesheet" href="/pages/bundle.css" />
+  <!--
+    <link rel="stylesheet" href="/pages/bundle.css" />
+  -->
   <link rel="modulepreload" href="/pages/Home.js">
 </head>
 
@@ -51,8 +53,9 @@
     }
 
     switch(match || location.pathname){
-    case "/appointment":
-      renderWithFile("/pages/Appointment.js");
+    case "/make-appointment":
+    case "/make_appointment":
+      renderWithFile("/pages/MakeAppointment.js");
       break;
     case "/404":
       renderWithFile("/pages/404.js");
@@ -64,7 +67,8 @@
       renderWithFile("/pages/Register.js");
       break;
     case "/profile":
-      // renderWithFile("/pages/Profile.js");
+      renderWithFile("/pages/Profile.js");
+      break;
     case "/shop":
       renderWithFile("/pages/Shop.js", {
         id: (function(){

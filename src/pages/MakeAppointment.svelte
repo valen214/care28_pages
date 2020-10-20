@@ -13,7 +13,7 @@
   import { getCurrentUserID } from "./api/session";
 
   let loading = true;
-  export let id = getAgentIdFromQuery();
+  export let agent_id = getAgentIdFromQuery();
   const TODAY: string = (d => {
     return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`
   })( new Date() );
@@ -21,7 +21,7 @@
   let message: string = "";
 
   let agent: Agent;
-  getAgentInfo(id).then(_agent => {
+  getAgentInfo(agent_id).then(_agent => {
     if(_agent){
       agent = _agent;
     } else{
@@ -31,6 +31,67 @@
   });
 
 </script>
+
+
+<TopBar />
+<div class="page-content">
+  {#if loading}
+    <div class="page-covering-screen">
+      { message || "Loading..." }
+    </div>
+  {/if}
+  <div class="top-panel">
+    <h2>Appointment</h2>
+    <div class="agent-name-row">
+      Agent: { agent?.name }
+    </div>
+    <label class="date-row">
+      Date:
+      <input type="date"
+          bind:value={date}
+          required={true}
+          min={TODAY} />
+    </label>
+  </div>
+  <div class="content-panel">
+    <div class="client-message-panel">
+      <span>Message to Agent:</span><br />
+      <textarea class="client-message-input"
+          bind:value={message} />
+    </div>
+  </div>
+  <div class="button-panel">
+    <Button on:click={async () => {
+      loading = true;
+      let result = await submitAppointment(agent_id, getCurrentUserID(), date, message);
+      console.log(result);
+      if(result.status === "success"){
+        function appointmentSuccessMessage(remaining_seconds = 5){
+          if(remaining_seconds <= 0){
+            location.href = location.origin + "/shop/" + agent_id;
+            return;
+          }
+          message = "appointment submitted! " +
+              "redirecting page back to shop in " +
+              remaining_seconds + " seconds";
+          setTimeout(appointmentSuccessMessage, 1000, remaining_seconds-1);
+        }
+        appointmentSuccessMessage();
+
+        setTimeout(() => {
+        }, 5000);
+      } else{
+        message = "failed to submit appointment";
+        setTimeout(() => {
+          loading = false;
+        }, 5000);
+      }
+    }}>
+      Submit Appointment
+    </Button>
+  </div>
+</div>
+
 
 <style>
   .page-content {
@@ -52,7 +113,7 @@
   .client-message-panel { grid-area: client; }
   .button-panel { grid-area: button; }
 
-  .loading-screen {
+  .page-covering-screen {
     height: 100%;
     width: 100%;
     top: 0;
@@ -109,43 +170,3 @@
   }
 </style>
 
-
-
-<TopBar />
-<div class="page-content">
-  {#if loading}
-    <div class="loading-screen">
-      Loading...
-    </div>
-  {/if}
-  <div class="top-panel">
-    <h2>Appointment</h2>
-    <div class="agent-name-row">
-      Agent: { agent?.name }
-    </div>
-    <label class="date-row">
-      Date:
-      <input type="date"
-          bind:value={date}
-          required={true}
-          min={TODAY} />
-    </label>
-  </div>
-  <div class="content-panel">
-    <div class="client-message-panel">
-      <span>Message to Agent:</span><br />
-      <textarea class="client-message-input"
-          bind:value={message} />
-    </div>
-  </div>
-  <div class="button-panel">
-    <Button on:click={async () => {
-      loading = true;
-      let result = await submitAppointment(id, getCurrentUserID(), date, message);
-      console.log(result);
-      loading = false;
-    }}>
-      Submit Appointment
-    </Button>
-  </div>
-</div>

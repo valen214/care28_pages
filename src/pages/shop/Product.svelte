@@ -3,13 +3,15 @@
 <script>
   import Button from "../components/Button.svelte";
   import AreaSelect from "../components/AreaSelect.svelte";
+	import { createEventDispatcher } from 'svelte';
 
-  export let edit;
+	const dispatch = createEventDispatcher();
+  export let mode;
   let file_input;
 
   export let product;
   $: ({
-    thumbnail, area, estate, price, status, lastUpdated
+    id, thumbnail, area, estate, price, status, lastUpdated
   } = product);
 </script>
 
@@ -20,6 +22,27 @@
     width: 100%;
     margin-bottom: 15px;
     column-gap: 15px;
+    position: relative;
+  }
+
+  .product .remove-mode-cover {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    z-index: 1000;
+    background: rgba(255, 180, 180, 0.8);
+    cursor: pointer;
+    font-size: 30px;
+  }
+  .product .remove-mode-cover:hover {
+    background: rgba(240, 100, 100, 0.8);
   }
 
   .product .thumbnail {
@@ -58,7 +81,7 @@
 </style>
 
 <div class="product">
-  {#if edit}
+  {#if mode === "edit"}
     <input type="file" style="display:none" bind:this={file_input}/>
     <img src={thumbnail}
         class="thumbnail edit"
@@ -82,6 +105,16 @@
     </select>
     <input class="text-input-field" bind:value={ product.lastUpdated } />
   {:else}
+    {#if mode === "remove"}
+      <div class="remove-mode-cover"
+          on:click={() => {
+            dispatch("remove", {
+              id: id
+            })
+          }}>
+        Click to remove
+      </div>
+    {/if}
     <img class="thumbnail"
         src={thumbnail} alt="thumbnail" />
     <span class:empty={!area} >{ area || "" }</span>

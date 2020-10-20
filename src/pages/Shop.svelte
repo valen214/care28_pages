@@ -1,7 +1,4 @@
 
-
-
-
 <script>
   import { makeApiInfoCall, REMOTE_ORIGIN, onDev, LOCAL_ORIGIN } from "./api";
   import { getCurrentUserID } from "./api/session";
@@ -19,7 +16,7 @@
 
   export let id = getShopIdFromUrl() || "";
   let current_user_id = getCurrentUserID();
-  let edit_mode = false;
+  let mode = false;
   let loading = true;
 
   let display_name;
@@ -38,13 +35,19 @@
         "current_user_id:", current_user_id, typeof current_user_id
     );
   })();
+  $: console.log("products:", products);
 
   async function saveEdit(){
-    edit_mode = false;
+    mode = false;
     saveProducts(products);
 
   }
 
+  function removeProductByIndex(index){
+    if(products){
+      products = products.filter((p, i) => i !== index);
+    }
+  }
   
   async function init(){
     makeApiInfoCall({
@@ -77,6 +80,9 @@
           shop_ID,
           _products => {
             products = _products;
+            if(mode === "edit" || mode === "remove"){
+              old_products = products.map(p => Object.assign({}, p));
+            }
           }
         );
 
@@ -163,6 +169,13 @@
     margin-left: 120px;
     height: 50px;
   }
+
+  .products-panel-header :global(.finish-removing-button) {
+    background: rgba(180, 255, 180, 0.8);
+  }
+  .products-panel-header :global(.finish-removing-button):hover {
+    background: rgba(120, 190, 120, 0.8);
+  }
 </style>
 
 <TopBar />
@@ -186,14 +199,14 @@
     <div class="top-panel-right-group">
       <div class="shop-action-button-panel">
         {#if current_user_id === id }
-          {#if edit_mode}
+          {#if mode === "edit" || mode === "remove"}
             <Button className="shop-action-button"
                 on:click={saveEdit}>
               Save Edit
             </Button>
             <Button className="shop-action-button"
                 on:click={() => {
-                  edit_mode = false;
+                  mode = false;
                   products = old_products;
                 }}>
               Cancel Edit
@@ -201,8 +214,10 @@
           {:else}
             <Button className="shop-action-button"
                 on:click={() => {
-                  edit_mode = true;
-                  old_products = products.map(p => Object.assign({}, p));
+                  mode = "edit";
+                  if(products){
+                    old_products = products.map(p => Object.assign({}, p));
+                  }
                 }}>
               Edit Shop
             </Button>
@@ -211,7 +226,7 @@
         {:else}
           <Button
               className="shop-action-button"
-              href={LOCAL_ORIGIN + "/appointment?agent_id=" + id}>
+              href={LOCAL_ORIGIN + "/make-appointment?agent_id=" + id}>
             約見 Appointment
           </Button>
         {/if}
@@ -221,18 +236,36 @@
   <div class="products-panel">
     <div class="products-panel-header">
       <h2>貨架</h2>
-      {#if edit_mode}
+      {#if mode === "edit" || mode === "remove"}
         <Button className="add-product-button"
             on:click={() => {
               products = [...products, {}];
             }}>
           Add Product
         </Button>
+        <Button className={"remove-product-button " + (
+          mode === "remove" ? "finish-removing-button" : ""
+        )}
+            on:click={() => {
+              if(mode === "edit"){
+                mode = "remove";
+              } else if(mode === "remove"){
+                mode = "edit";
+              }
+            }}>
+          {mode === "edit" ?
+            "Remove Product" :
+            "Finish Removing Product"}
+        </Button>
       {/if}
     </div>
     {#if Array.isArray(products)}
-      {#each products as product}
-        <Product edit={edit_mode} bind:product />
+      {#each products as product, index}
+        <Product mode={mode}
+            bind:product
+            on:remove={() => {
+              removeProductByIndex(index);
+            }} />
       {:else}
         <div style="margin-bottom: 50px">
           未有任何產品

@@ -6,6 +6,9 @@ export const REMOTE_ORIGIN = (
 );
 export const LOCAL_ORIGIN = document.location.origin;
 
+console.log(`REMOTE ORIGIN: ${REMOTE_ORIGIN}
+LOCAL_ORIGIN: ${LOCAL_ORIGIN}`);
+
 export function onDev(func: () => void){
   if(!PRODUCTION){
     func();

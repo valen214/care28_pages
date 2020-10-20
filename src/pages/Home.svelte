@@ -16,34 +16,6 @@
     outstanding_agents = agents;
   });
 
-  export let products = {
-    "1": {
-      name: "product NAME",
-      description: "HELLO WORLD! product description",
-      images: [
-        "/wp-content/uploads/avatar/cx86Z3GqBz-",
-        "/wp-content/uploads/avatar/C7djvi-" +
-        "6bda7a8828925a0a8485037bfef2b2c0d7e88e4eddbb1f465a19a815fe7c2b74.jpg",
-      ]
-    },
-    "2": {
-      name: "PRODUCT TWO",
-      description: "PRODUCT TWO DESCRIPTION",
-      images: [
-        "/wp-content/uploads/avatar/ZUKEFY-" +
-        "1c3d94776234ac83cdd5060c27a36e4980b66345761eaa343888efb3828da650.jpg",
-      ]
-    }
-  };
-
-  $: if(typeof products === "string"){
-    try {
-      products = JSON.parse(products);
-    } catch(e){
-      products = {};
-    }
-  }
-
   let searchButtonHeight;
   $: console.log('search buttong height:', searchButtonHeight);
 </script>
