@@ -48,7 +48,14 @@ export type Appointment = {
   feedback?: string
 };
 
-export async function makeApiInfoCall(body: object){
+
+type INFO_PAYLOAD_TYPE = {
+  [key: string]: any
+} | {
+  "type": "query_user" | "edit_user" | "query_shop" | "edit_shop"
+};
+
+export async function makeApiInfoCall(body: INFO_PAYLOAD_TYPE){
   let token = localStorage.getItem("token");
   if(token){
     body["token"] = token;

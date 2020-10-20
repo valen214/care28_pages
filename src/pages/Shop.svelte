@@ -18,6 +18,7 @@
   let current_user_id = getCurrentUserID();
   let mode = false;
   let loading = true;
+  let status_message = "";
 
   let display_name;
   let shop_ID;
@@ -83,6 +84,7 @@
             if(mode === "edit" || mode === "remove"){
               old_products = products.map(p => Object.assign({}, p));
             }
+            status_message = "last queried at " + new Date().toLocaleString();
           }
         );
 
@@ -176,6 +178,13 @@
   .products-panel-header :global(.finish-removing-button):hover {
     background: rgba(120, 190, 120, 0.8);
   }
+
+  .products-panel-header .products-query-status {
+    font-size: 0.6em;
+    font-style: italic;
+    margin-right: 0;
+    margin-left: auto;
+  }
 </style>
 
 <TopBar />
@@ -258,6 +267,9 @@
             "Finish Removing Product"}
         </Button>
       {/if}
+      <div class="products-query-status">
+        { status_message }
+      </div>
     </div>
     {#if Array.isArray(products)}
       {#each products as product, index}
