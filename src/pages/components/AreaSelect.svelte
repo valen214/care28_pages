@@ -1,40 +1,8 @@
 
-
-<script context="module">
+<script>
+  import { stations } from "./AreaSelectData";
   import Button from "./Button.svelte";
   import { onMount } from 'svelte';
-
-  // { [lines: string]: Array<string> }
-  // http://www.mtr.com.hk/archive/en/services/routemap.pdf
-  export const stations = {
-    "機場快線": [
-      "博覽館", "機場", "青衣", "九龍", "香港"
-    ],
-    "迪士尼線": [
-      "欣澳", "迪士尼"
-    ],
-    "東鐵線": [
-      "紅磡", "旺角東", "九龍塘", "大圍", "沙田",
-      "火炭", "馬場", "大學", "大埔墟", "太和",
-      "粉嶺", "上水", "羅湖", "落馬洲"
-    ],
-    "港島線": [ "" ],
-    "觀塘線": [ "" ],
-    "南港島線": [ "" ],
-    "將軍澳線": [ "" ],
-    "荃灣線": [ "" ],
-    "屯馬線一期": [ "" ],
-    "東涌線": [ "" ],
-    "西鐵線": [ "" ],
-    "輕鐵": [ "" ],
-  };
-
-  export async function selectArea(){
-
-  }
-
-</script>
-<script>
   export let className;
   export let value;
 

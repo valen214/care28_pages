@@ -1,15 +1,17 @@
 
 
-<script>
+<script lang="ts">
+  import type { Product } from "../api";
   import Button from "../components/Button.svelte";
   import AreaSelect from "../components/AreaSelect.svelte";
 	import { createEventDispatcher } from 'svelte';
+  import type { login } from "../api/session";
 
 	const dispatch = createEventDispatcher();
-  export let mode;
-  let file_input;
+  export let mode: string;
+  let file_input: HTMLInputElement;
 
-  export let product;
+  export let product: Product;
   $: ({
     id, thumbnail, area, estate, price, status, lastUpdated
   } = product);
@@ -82,7 +84,18 @@
 
 <div class="product">
   {#if mode === "edit"}
-    <input type="file" style="display:none" bind:this={file_input}/>
+    <input type="file"
+        style="display:none"
+        bind:this={file_input}
+        on:change={() => {
+          console.log("on file change");
+        }}
+        on:input={() => {
+          console.log('on file input');
+          product.upload = {
+            thumbnail: file_input.files[0]
+          };
+        }}/>
     <img src={thumbnail}
         class="thumbnail edit"
         alt="thumbnail"
@@ -110,7 +123,7 @@
           on:click={() => {
             dispatch("remove", {
               id: id
-            })
+            });
           }}>
         Click to remove
       </div>

@@ -32,12 +32,17 @@ export type Product = {
   price?: string,
   status?: string,
   lastUpdated?: string
+  upload?: {
+    thumbnail?: File
+  }
 };
 
 export type Appointment = {
-  client_id?: number
-  agent_id?: number
-  client_name?: string
+  client_ID?: number
+  agent_ID?: number
+  confirmed?: boolean
+  finished?: boolean
+  requested_date?: string
   area?: string
   estate?: string
   rating_attitude?: number
@@ -46,45 +51,48 @@ export type Appointment = {
   rating_property?: number
   rating_overall?: number
   feedback?: string
+
+  local?: {
+    agent_name?: string
+    client_name?: string
+  }
 };
 
 
-type INFO_PAYLOAD_TYPE = {
+type API_PAYLOAD_TYPE = {
   [key: string]: any
 } | {
-  "type": "query_user" | "edit_user" | "query_shop" | "edit_shop"
+  "type": "query_user" | "edit_user" |
+          "query_shop" | "edit_shop" |
+          "make_appointments"
 };
 
-export async function makeApiInfoCall(body: INFO_PAYLOAD_TYPE){
+export async function makeApiCall(
+  path: string,
+  body: API_PAYLOAD_TYPE
+){
   let token = localStorage.getItem("token");
   if(token){
     body["token"] = token;
   }
 
-  console.log("makeApiInfoCall:", body);
-  return fetch(REMOTE_ORIGIN + "/wp-json/api/v1/info", {
+  console.log("makeApiCall:", path, body);
+  return fetch(REMOTE_ORIGIN + path, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(body)
   });
+
+}
+
+export async function makeApiInfoCall(body: API_PAYLOAD_TYPE){
+  return makeApiCall("/wp-json/api/v1/info", body);
 }
 
 export async function makeApiAppointmentCall(body: object){
-  let token = localStorage.getItem("token");
-  if(token){
-    body["token"] = token;
-  }
-
-  console.log("makeApiAppointmentCall:", body);
-  return fetch(REMOTE_ORIGIN + "/wp-json/api/v1/appointments", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body)
-  });
+  return makeApiCall("/wp-json/api/v1/appointments", body);
 }
 
 

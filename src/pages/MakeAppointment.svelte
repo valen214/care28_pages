@@ -62,6 +62,7 @@
   </div>
   <div class="button-panel">
     <Button on:click={async () => {
+      message = "loading...";
       loading = true;
       let result = await submitAppointment(agent_id, getCurrentUserID(), date, message);
       console.log(result);
@@ -82,6 +83,7 @@
         }, 5000);
       } else{
         message = "failed to submit appointment";
+        console.log("failed to submit appointment, result:", result);
         setTimeout(() => {
           loading = false;
         }, 5000);

@@ -13,6 +13,7 @@
 
   let name = writable("");
   let avatar = writable("");
+  let usertype = writable("");
   let pending_appointments = writable([]);
 
 
@@ -23,6 +24,7 @@
         current_user_id,
         name,
         avatar,
+        usertype,
         pending_appointments
       );
       loading = false;
@@ -47,7 +49,10 @@
   <h2>Appointments</h2>
   <h3>Pending Appointments</h3>
   {#each $pending_appointments as appointment}
-    <Appointment appointment={appointment} />
+    <Appointment
+        viewAs={$usertype}
+        appointment={appointment}
+    />
   {:else}
     <div>
       No pending appointments
