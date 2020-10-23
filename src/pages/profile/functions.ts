@@ -7,13 +7,14 @@ import {
   makeApiAppointmentCall,
   Appointment
 } from "../api";
+import { transformPayloadToAppointment } from "../api/appointment_util";
 
 export async function init(
   current_user_id: number,
   name: Writable<string>,
   avatar: Writable<string>,
   usertype: Writable<string>,
-  pending_appointments: Writable<any>
+  appointments: Writable<any>
 ){
   let appointment_res = makeApiAppointmentCall({
     "type": "query_appointments"
@@ -35,24 +36,9 @@ export async function init(
   avatar.set(AVATAR_BASE_PATH + result.avatar);
   usertype.set(result.usertype);
 
-  let appointment_result: Appointment[] = (await appointment_res).result.map(
-    (appointment: any): Appointment => {
-      // transform payload appointment to local
-      appointment.confirmed = parseInt(appointment.confirmed);
-      appointment.finished = parseInt(appointment.finished);
-      appointment.local = {
-        client_name: appointment.client_name,
-        agent_name: appointment.agent_name,
-      };
-      delete appointment["client_name"];
-      delete appointment["agent_name"];
-      return appointment;
-    }
-  );
+  let appointment_result: Appointment[] = (
+    await appointment_res
+  ).result.map(transformPayloadToAppointment);
   console.log(appointment_result);
-  pending_appointments.set(
-    appointment_result.filter(
-      (appointment: any) => !appointment.confirmed
-    )
-  );
+  appointments.set(appointment_result);
 }

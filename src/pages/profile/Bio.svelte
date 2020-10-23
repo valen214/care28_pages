@@ -1,14 +1,14 @@
 
 
 <script lang="ts">
-
   export let name: string = "";
   export let avatar: string = "";
+  export let className: string = "";
 
 
 </script>
 
-<div class="bio">
+<div class={"bio " + className}>
   <img class="avatar" src={avatar} alt="avatar" />
   <div class="info">
     <h2>Profile of { name }</h2>

@@ -1,9 +1,10 @@
 
 <script lang="ts">
-  import { writable } from "svelte/store";
+  import { writable, derived } from "svelte/store";
 
   import { getCurrentUserID } from "./api/session";
   import TopBar from "./components/TopBar.svelte";
+  import Button from "./components/Button.svelte";
   import { init } from "./profile/functions";
   import Bio from "./profile/Bio.svelte";
   import Appointment from "./profile/Appointment.svelte";
@@ -14,7 +15,14 @@
   let name = writable("");
   let avatar = writable("");
   let usertype = writable("");
-  let pending_appointments = writable([]);
+  let appointments = writable([]);
+  let pending_appointments = derived(
+    appointments,
+    $appointments => $appointments.filter(
+      (appointment: any) => !appointment.confirmed
+    )
+  );
+  let view_all_appointments = false;
 
 
   (async function(){
@@ -25,7 +33,7 @@
         name,
         avatar,
         usertype,
-        pending_appointments
+        appointments
       );
       loading = false;
     } else {
@@ -43,12 +51,33 @@
     Loading...
   </div>
 {:else}
-  <div>
-    <Bio name={$name} avatar={$avatar} />
+  <div class="top-panel w100">
+    <Bio className="profile-bio" 
+        name={$name} avatar={$avatar} />
+    <div class="top-panel-button-panel">
+      <Button className="w100">View My Shop</Button>
+    </div>
   </div>
   <h2>Appointments</h2>
-  <h3>Pending Appointments</h3>
-  {#each $pending_appointments as appointment}
+  {#if view_all_appointments}
+    <h3 class="inline-block">
+      All Appointments
+    </h3>
+    <Button on:click={() => {
+      view_all_appointments = false;
+    }}>View Only Pending Appointments</Button>
+  {:else}
+    <h3 class="pending-appointments-title">
+      Pending Appointments
+    </h3>
+    <Button on:click={() => {
+      view_all_appointments = true;
+    }}>View All Appointments</Button>
+  {/if}
+  {#each (view_all_appointments ?
+      $appointments :
+      $pending_appointments
+  ) as appointment}
     <Appointment
         viewAs={$usertype}
         appointment={appointment}
@@ -65,8 +94,15 @@
   :global(body) {
     font-size: 24px;
   }
+  .inline-block {
+    display: inline-block;
+  }
 
-  .w100 {
+  .top-panel :global(.profile-bio){
+    width: 70%;
+  }
+
+  :global(.w100) {
     width: 100%;
   }
   .h100 {
@@ -76,5 +112,22 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+
+  .top-panel {
+    display: flex;
+  }
+
+  .top-panel-button-panel {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 15px;
+  }
+
+  .pending-appointments-title {
+    display: inline-block;
   }
 </style>

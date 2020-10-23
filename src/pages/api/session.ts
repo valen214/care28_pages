@@ -1,8 +1,6 @@
 
 
-
-
-import { makeApiInfoCall, REMOTE_ORIGIN } from "./index";
+import { REMOTE_ORIGIN } from "./constants";
 
 export function getCurrentUserID(){
   let id = localStorage.getItem("userID");

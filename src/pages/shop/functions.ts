@@ -148,9 +148,7 @@ export function fetchAppointments(setAppointments: TSetAppointmentCallback){
       rating_property: 4.0,
       rating_overall: 4.2,
       feedback: "nice person, gives you warm feeling",
-      local: {
-        client_name: "abcdef",
-      }
+      client_name: "abcdef",
     }, {
       area: "將軍澳",
       estate: "SEA TO SKY",
@@ -160,9 +158,7 @@ export function fetchAppointments(setAppointments: TSetAppointmentCallback){
       rating_property: 4.2,
       rating_overall: 4.2,
       feedback: "good",
-      local: {
-        client_name: "Terry",
-      },
+      client_name: "Terry",
     }
   ])
 }

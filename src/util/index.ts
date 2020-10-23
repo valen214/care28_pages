@@ -9,3 +9,8 @@ export async function toBase64(file: File): Promise<string> {
     reader.readAsDataURL(file);
   });
 }
+
+
+export function getDate(){
+  return new Date().toLocaleString();
+}

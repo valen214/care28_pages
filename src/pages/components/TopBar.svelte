@@ -37,10 +37,10 @@
 
   .top-bar :global(.top-bar-button-fix) {
     margin-bottom: 6px;
-    font-weight: 900;
-    text-shadow: rgba(0, 0, 0, 0.5) 0 0 0.1px;
-    font-size: 17px;
-    font-family: "Noto Sans CJK TC", sans-serif;
+    font-weight: 700;
+    /* text-shadow: rgba(0, 0, 0, 0.5) 0 0 0.1px; */
+    font-size: 18px;
+    font-family: "微軟正黑體", "Noto Sans CJK TC", sans-serif;
   }
 
   .top-bar .top-bar-image-link-fix {
