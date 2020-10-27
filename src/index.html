@@ -9,6 +9,7 @@
   <style>
     * {
       box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
     }
     html, body {
       margin: 0;
@@ -16,6 +17,16 @@
       padding: 0;
       width: 100%;
       height: 100%;
+    }
+
+    .w100 {
+      width: 100%;
+    }
+
+    .flex-center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   </style>
   <!--
@@ -71,6 +82,9 @@
       break;
     case "/profile":
       renderWithFile("/pages/Profile.js");
+      break;
+    case "/edit-profile":
+      renderWithFile("/pages/EditProfile.js");
       break;
     case "/shop":
       renderWithFile("/pages/Shop.js", {

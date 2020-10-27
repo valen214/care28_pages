@@ -18,7 +18,7 @@
 
 
 <a { id } { href } on:click
-    class={[className].join(" ")}
+    class={["button-class", className].join(" ")}
     bind:clientHeight
     on:mouseover
     on:mouseleave
@@ -34,7 +34,7 @@
 
 
 <style>
-  a {
+  .button-class {
     background: var(--background, white);
     border: none;
     box-shadow: none;
@@ -52,10 +52,10 @@
     justify-content: center;
     align-items: center;
   }
-  a:hover {
+  .button-class:hover {
     background: var(--hover-bg-color, #ccc);
   }
-  a:active {
+  .button-class:active {
     background: var(--active-bg-color, #aaa);
   }
 </style>

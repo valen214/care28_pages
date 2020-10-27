@@ -3,8 +3,8 @@
   import { stations } from "./AreaSelectData";
   import Button from "./Button.svelte";
   import { onMount } from 'svelte';
-  export let className;
-  export let value;
+  export let className = "";
+  export let value = "";
 
   let fullpage_popup;
   let show = false;

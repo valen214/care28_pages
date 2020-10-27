@@ -2,7 +2,7 @@
 <script lang="ts">
   import { writable, derived } from "svelte/store";
 
-  import { getCurrentUserID } from "./api/session";
+  import { LOCAL_ORIGIN, getCurrentUserID } from "./api";
   import TopBar from "./components/TopBar.svelte";
   import Button from "./components/Button.svelte";
   import { init } from "./profile/functions";
@@ -55,7 +55,10 @@
     <Bio className="profile-bio" 
         name={$name} avatar={$avatar} />
     <div class="top-panel-button-panel">
-      <Button className="w100">View My Shop</Button>
+      <Button className="w100"
+          href={LOCAL_ORIGIN + "/shop"}>View My Shop</Button>
+      <Button className="w100"
+          href={LOCAL_ORIGIN + "/edit-profile"}>Edit Profile</Button>
     </div>
   </div>
   <h2>Appointments</h2>
@@ -122,6 +125,7 @@
   .top-panel-button-panel {
     flex-grow: 1;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: flex-start;
     padding: 15px;

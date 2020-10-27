@@ -13,6 +13,7 @@ export function getCurrentUserID(){
 export function logout(){
   localStorage.removeItem("token");
   localStorage.removeItem("userID");
+  localStorage.removeItem("usertype");
 }
 
 
@@ -58,7 +59,8 @@ export async function login(
     return;
   }
   let out = await res.json();
-  if(out.body !== "ok"){
+  if(out.body !== "ok" ||
+  !["client", "agent"].includes(out.usertype)){
     console.error("unexpected api response");
     loading = false;
     return;
@@ -80,6 +82,7 @@ export async function login(
 
   localStorage.setItem("token", token.token);
   localStorage.setItem("userID", out.id);
+  localStorage.setItem("usertype", out.usertype);
 
   return {
     status: "success",

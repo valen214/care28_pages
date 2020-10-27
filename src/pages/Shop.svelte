@@ -10,11 +10,11 @@
   import {
     fetchProducts,
     fetchAppointments,
-    getShopIdFromUrl,
+    getUserIdFromUrl,
     saveProducts
   } from "./shop/functions";
 
-  export let id = getShopIdFromUrl() || "";
+  export let id = getUserIdFromUrl() || "";
   let current_user_id = getCurrentUserID();
   let mode = false;
   let loading = true;
@@ -115,77 +115,6 @@
   <base href={REMOTE_ORIGIN} />
 </svelte:head>
 
-<style>
-  .root {
-    padding: 15px;
-    font-family: Arial, Helvetica, sans-serif;
-    position: relative;
-  }
-
-  .loading-panel {
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    z-index: 1000;
-    background: white;
-  }
-
-  .top-panel {
-    height: 300px;
-  }
-  .top-panel-left-group {
-    float: left;
-    width: 70%;
-  }
-  .top-panel-right-group {
-    display: inline-block;
-    width: 30%;
-    height: 100%;
-  }
-
-  .top-panel-right-group .shop-action-button-panel {
-    width: 100%;
-  }
-
-  .shop-action-button-panel :global(.shop-action-button) {
-    width: 100%;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-  }
-
-  .products-panel-header {
-    height: 75px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-  }
-  .products-panel-header > h2 {
-    display: inline-block;
-  }
-  :global(.add-product-button) {
-    margin-left: 120px;
-    height: 50px;
-  }
-
-  .products-panel-header :global(.finish-removing-button) {
-    background: rgba(180, 255, 180, 0.8);
-  }
-  .products-panel-header :global(.finish-removing-button):hover {
-    background: rgba(120, 190, 120, 0.8);
-  }
-
-  .products-panel-header .products-query-status {
-    font-size: 0.6em;
-    font-style: italic;
-    margin-right: 0;
-    margin-left: auto;
-  }
-</style>
 
 <TopBar />
 <div class="root">
@@ -209,29 +138,40 @@
       <div class="shop-action-button-panel">
         {#if current_user_id === id }
           {#if mode === "edit" || mode === "remove"}
-            <Button className="shop-action-button"
-                on:click={saveEdit}>
+            <Button
+            className="shop-action-button"
+            on:click={saveEdit}>
               Save Edit
             </Button>
-            <Button className="shop-action-button"
-                on:click={() => {
-                  mode = false;
-                  products = old_products;
-                }}>
+            <Button
+            className="shop-action-button"
+            on:click={() => {
+              mode = false;
+              products = old_products;
+            }}>
               Cancel Edit
-          </Button>
+            </Button>
           {:else}
-            <Button className="shop-action-button"
-                on:click={() => {
-                  mode = "edit";
-                  if(products){
-                    old_products = products.map(p => Object.assign({}, p));
-                  }
-                }}>
+            <Button
+            className="shop-action-button"
+            on:click={() => {
+              mode = "edit";
+              if(products){
+                old_products = products.map(p => Object.assign({}, p));
+              }
+            }}>
               Edit Shop
             </Button>
+            <Button
+            className="shop-action-button">
+              View Page as client
+            </Button>
+            <Button
+            className="view-my-profile-button"
+            href={LOCAL_ORIGIN + "/profile"}>
+              View My Profile
+            </Button>
           {/if}
-          <Button className="shop-action-button">View Page as client</Button>
         {:else}
           <Button
               className="shop-action-button"
@@ -301,3 +241,76 @@
   </div>
 </div>
 
+
+<style>
+  .root {
+    padding: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    position: relative;
+  }
+
+  .loading-panel {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1000;
+    background: white;
+  }
+
+  .top-panel {
+    height: 300px;
+  }
+  .top-panel-left-group {
+    float: left;
+    width: 70%;
+  }
+  .top-panel-right-group {
+    display: inline-block;
+    width: 30%;
+    height: 100%;
+  }
+
+  .top-panel-right-group .shop-action-button-panel {
+    width: 100%;
+  }
+
+  .shop-action-button-panel :global(.shop-action-button),
+  .shop-action-button-panel :global(.view-my-profile-button) {
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  .products-panel-header {
+    height: 75px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  .products-panel-header > h2 {
+    display: inline-block;
+  }
+  :global(.add-product-button) {
+    margin-left: 120px;
+    height: 50px;
+  }
+
+  .products-panel-header :global(.finish-removing-button) {
+    background: rgba(180, 255, 180, 0.8);
+  }
+  .products-panel-header :global(.finish-removing-button):hover {
+    background: rgba(120, 190, 120, 0.8);
+  }
+
+  .products-panel-header .products-query-status {
+    font-size: 0.6em;
+    font-style: italic;
+    margin-right: 0;
+    margin-left: auto;
+  }
+</style>

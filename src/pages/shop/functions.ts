@@ -165,7 +165,7 @@ export function fetchAppointments(setAppointments: TSetAppointmentCallback){
 
 
 
-export function getShopIdFromUrl(){
+export function getUserIdFromUrl(){
   let matchResult = location.href.match(/\/shop\/(\d+)(\?|$)/);
   if(matchResult){
     return parseInt(matchResult[1]) || "";

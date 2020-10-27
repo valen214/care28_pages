@@ -13,6 +13,15 @@ export function onDev(func: () => void){
   }
 }
 
+export type User = {
+  id?: number
+  name?: string
+  avatar?: string
+  usertype?: "client" | "agent"
+  rating?: number
+  shopID?: number
+};
+
 export type Agent = {
   name?: string
   rating?: number

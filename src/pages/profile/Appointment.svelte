@@ -1,10 +1,11 @@
 
 
 <script lang="ts">
-  import type { Appointment } from "../api";
+  import type { Appointment as TAppointment } from "../api";
+  import { confirmAppointment } from "../api";
   import Button from "../components/Button.svelte";
   
-  export let appointment: Appointment;
+  export let appointment: TAppointment;
   export let viewAs: string = "client";
 
   $: status = (
@@ -19,16 +20,21 @@
 <div class="appointment">
   <div class="appointment-details-panel">
     {#if viewAs === "agent"}
-    <div>
-      客戶名稱: { appointment?.client_name || "" }
-    </div>
+      <div class="flex-start-center">
+        客戶名稱: { appointment?.client_name || "" }
+      </div>
     {:else}
-      經紀名稱: { appointment?.agent_name }
+      <div class="flex-start-center">
+        經紀名稱: { appointment?.agent_name }
+      </div>
     {/if}
-    <div>
+    <div class="flex-start-center">
       預約日期: { appointment?.requested_date || "待設定" }
     </div>
-    <div>
+    <div
+        class="flex-start-center"
+        class:confirmed={appointment.confirmed}
+        class:awaiting-confirmation={!appointment.confirmed && !appointment.finished}>
       狀態: { status }
     </div>
   </div>
@@ -40,7 +46,17 @@
     </Button>
     {#if viewAs === "agent"}
       {#if !appointment.confirmed}
-        <Button className="confirm-appointment">
+        <Button className="confirm-appointment"
+            background="rgba(45, 208, 45, 0.5)"
+            hoverbgcolor="rgba(15, 128, 15, 0.5)"
+            on:click={async () => {
+              let res = await confirmAppointment(
+                appointment.id,
+                "agent confirmed the appointment on " + new Date().toLocaleString()
+              );
+              console.assert(res.status === "appointment confirmed");
+              appointment.confirmed = true;
+            }}>
           確認預約
         </Button>
       {/if}
@@ -52,6 +68,12 @@
 </div>
 
 <style>
+  .flex-start-center {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
   .appointment {
     display: grid;
     padding: 15px;
@@ -82,9 +104,17 @@
 
   :global(.view-appointment-details) {
     width: 50%;
+    color: white;
   }
 
   :global(.confirm-appointment) {
     width: 50%;
+  }
+
+  .confirmed {
+    background: rgba(45, 238, 45, 0.2);
+  }
+  .awaiting-confirmation {
+    background: rgb(238, 238, 15, 0.7);
   }
 </style>
