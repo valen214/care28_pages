@@ -5,7 +5,9 @@ import {
   makeApiInfoCall,
   AVATAR_BASE_PATH,
   makeApiAppointmentCall,
-  Appointment
+  Appointment,
+  Tag,
+  transformTags
 } from "../api";
 import { transformPayloadToAppointment } from "../api/appointment_util";
 
@@ -14,7 +16,8 @@ export async function init(
   name: Writable<string>,
   avatar: Writable<string>,
   usertype: Writable<string>,
-  appointments: Writable<any>
+  appointments: Writable<any>,
+  tags: Writable<Tag[]>
 ){
   let appointment_res = makeApiAppointmentCall({
     "type": "query_appointments"
@@ -28,6 +31,7 @@ export async function init(
       "display_name",
       "avatar",
       "usertype",
+      "tags",
     ]
   });
   let result = await res.json();
@@ -35,6 +39,10 @@ export async function init(
   name.set(result.display_name);
   avatar.set(AVATAR_BASE_PATH + result.avatar);
   usertype.set(result.usertype);
+  if(result.tags){
+    tags.set(transformTags(result.tags));
+  }
+  console.log("tags:", tags, result.tags);
 
   let appointment_result: Appointment[] = (
     await appointment_res

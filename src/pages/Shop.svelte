@@ -171,6 +171,11 @@
             href={LOCAL_ORIGIN + "/profile"}>
               View My Profile
             </Button>
+            <Button
+                className="shop-action-button"
+                href={LOCAL_ORIGIN + "/create-appointment"}>
+              新增預約
+            </Button>
           {/if}
         {:else}
           <Button

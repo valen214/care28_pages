@@ -15,6 +15,7 @@
   let name = writable("");
   let avatar = writable("");
   let usertype = writable("");
+  let tags = writable([]);
   let appointments = writable([]);
   let pending_appointments = derived(
     appointments,
@@ -33,7 +34,8 @@
         name,
         avatar,
         usertype,
-        appointments
+        appointments,
+        tags
       );
       loading = false;
     } else {
@@ -53,7 +55,8 @@
 {:else}
   <div class="top-panel w100">
     <Bio className="profile-bio" 
-        name={$name} avatar={$avatar} />
+        name={$name} avatar={$avatar}
+        tags={$tags} />
     <div class="top-panel-button-panel">
       <Button className="w100"
           href={LOCAL_ORIGIN + "/shop"}>View My Shop</Button>

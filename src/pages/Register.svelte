@@ -1,5 +1,9 @@
 
 <script>
+  import TopBar from "./components/TopBar.svelte";
+  import Button from "./components/Button.svelte";
+  import MessageOverlay from "./components/MessageOverlay.svelte";
+  import { LOCAL_ORIGIN, REMOTE_ORIGIN } from "./api";
 
   let error_message;
   let password_not_match = false;
@@ -10,6 +14,10 @@
       error_message = "";
     }
   }
+
+  let overlay_message = "";
+
+
 
   let username;
   let password, repassword;
@@ -25,8 +33,7 @@
       return;
     }
 
-    let url = location.origin + "/wp-json/api/v1/user";
-    url = "//18.166.176.71/wp-json/api/v1/user";
+    let url = REMOTE_ORIGIN + "/wp-json/api/v1/user";
     let res = await fetch(url, {
       method: "POST",
       headers: {
@@ -42,12 +49,100 @@
     });
     res = await res.json();
     console.log(res);
+
+    if(res.body === "user registered"){
+      error_message = "";
+      overlay_message = "registration success";
+      setTimeout(() => {
+        location.href = LOCAL_ORIGIN + "/home";
+      }, 2000);
+    } else {
+      error_message = "registration failed";
+    }
   }
 </script>
+
+
+<TopBar />
+<div class="page-content">
+  {#if error_message }
+    <div class="row error-message">
+      { error_message }
+    </div>
+  {/if}
+  <div class="panel">
+    <MessageOverlay
+        show={overlay_message}
+        message={overlay_message} />
+    <div class="row">
+      <label>
+        Username
+        <input id="input-username" type="text" bind:value={username} />
+      </label>
+    </div>
+    <div class="row">
+      <label>
+        Password
+        <input id="input-password"
+            type="password"
+            bind:value={password}
+            on:input={(e) => {
+              password_not_match = (repassword !== password)
+            }} />
+      </label>
+    </div>
+    <div class="row">
+      <label>
+        Retype Password
+        <input id="input-repassword"
+            type="password"
+            style={password_not_match ? "border-color: red;" : ""}
+            bind:value={repassword}
+            on:input={(e) => {
+              password_not_match = (repassword !== password)
+            }} />
+      </label>
+    </div>
+    <div class="row">
+      <label class="radio">
+        <input id="input-usertype-client"
+            type="radio" name="usertype"
+            value="client" bind:group={usertype} />
+        Client
+      </label>
+      <label class="radio">
+        <input id="input-usertype-agent"
+            type="radio" name="usertype"
+            value="agent" bind:group={usertype} />
+        Agent
+      </label>
+    </div>
+    <div class="row">
+      <label>
+        Email
+        <input id="input-email" type="text" bind:value={email} />
+      </label>
+    </div>
+    <div class="row">
+      <Button
+          _style="border: 1px solid rgba(0, 0, 0, 0.2)"
+          on:click={onSubmit}
+      >Submit</Button>
+    </div>
+  </div>
+</div>
 
 <style>
   .page-content {
     padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .panel {
+    position: relative;
   }
 
   .error-message {
@@ -84,67 +179,3 @@
     margin-bottom: 15px;
   }
 </style>
-
-<top-bar></top-bar>
-<div class="page-content">
-  {#if error_message }
-    <div class="row error-message">
-      { error_message }
-    </div>
-  {/if}
-  <div class="row">
-    <label>
-      Username
-      <input id="input-username" type="text" bind:value={username} />
-    </label>
-  </div>
-  <div class="row">
-    <label>
-      Password
-      <input id="input-password"
-          type="password"
-          bind:value={password}
-          on:input={(e) => {
-            password_not_match = (repassword !== password)
-          }} />
-    </label>
-  </div>
-  <div class="row">
-    <label>
-      Retype Password
-      <input id="input-repassword"
-          type="password"
-          style={password_not_match ? "border-color: red;" : ""}
-          bind:value={repassword}
-          on:input={(e) => {
-            password_not_match = (repassword !== password)
-          }} />
-    </label>
-  </div>
-  <div class="row">
-    <label class="radio">
-      <input id="input-usertype-client"
-          type="radio" name="usertype"
-          value="client" bind:group={usertype} />
-      Client
-    </label>
-    <label class="radio">
-      <input id="input-usertype-agent"
-          type="radio" name="usertype"
-          value="agent" bind:group={usertype} />
-      Agent
-    </label>
-  </div>
-  <div class="row">
-    <label>
-      Email
-      <input id="input-email" type="text" bind:value={email} />
-    </label>
-  </div>
-  <div class="row">
-    <component-button
-        _style="border: 1px solid rgba(0, 0, 0, 0.2)"
-        on:click={onSubmit}
-    >Submit</component-button>
-  </div>
-</div>

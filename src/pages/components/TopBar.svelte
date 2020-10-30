@@ -66,6 +66,11 @@
     {#if !loggedin}
       <Button
           className="top-bar-button-fix"
+          href={LOCAL_ORIGIN + "/register"}>
+        註冊
+      </Button>
+      <Button
+          className="top-bar-button-fix"
           href={LOCAL_ORIGIN + "/login"}>
         登入
       </Button>

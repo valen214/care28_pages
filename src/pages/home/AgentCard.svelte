@@ -31,7 +31,7 @@
         on:click={() => {
           document.location.replace(location.origin + "/shop/" + id);
         }}>
-      看有關{ name }的報告
+      看{ name }的商店
     </Button>
   </div>
 </div>

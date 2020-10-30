@@ -1,6 +1,7 @@
 
 
 <script>
+  import TopBar from "./components/TopBar.svelte";
   import Button from "./components/Button.svelte"
   import { login as __login } from "./api/session";
 
@@ -32,7 +33,7 @@
   }
 </script>
 
-
+<TopBar />
 <div class="page-content">
   <div class="login-panel-positioner flex-center">
     <div class="login-panel flex-center">

@@ -61,9 +61,17 @@
       match = "/shop";
     } else if(location.pathname.match(/\/appointment/)){
       match = "/appointment";
+    } else if(location.pathname.match(/\/qna/)){
+      match = "/qna";
     }
 
     switch(match || location.pathname){
+    case "/create-appointment":
+      renderWithFile("/pages/CreateAppointment.js");
+      break;
+    case "/qna":
+      renderWithFile("/pages/QNA.js");
+      break;
     case "/view-appointment":
       renderWithFile("/pages/ViewAppointment.js");
       break;

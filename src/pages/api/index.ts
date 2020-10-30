@@ -44,6 +44,7 @@ export type Product = {
   }
 };
 
+export * from "./users";
 export * from "./appointment_util";
 export * from "./appointment";
 export * from "./constants";
