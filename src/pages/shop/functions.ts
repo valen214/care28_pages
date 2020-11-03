@@ -24,7 +24,23 @@ export async function fetchProducts(
         "estate",
         "price",
         "status",
-        "lastUpdated"
+        "lastUpdated",
+
+        "valuation1_name",
+        "valuation1",
+        "valuation2_name",
+        "valuation2",
+        "last_transaction_date",
+        "last_transaction_price",
+        "block",
+        "flat",
+        "floor",
+        "saleable_area",
+        "partition",
+        "unit_rate",
+        "agent_remark",
+        "recent_similar_transaction",
+        "hand"
       ]
     });
     let result = await res.json();

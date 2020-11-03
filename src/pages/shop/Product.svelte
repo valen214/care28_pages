@@ -14,7 +14,14 @@
 
   export let product: Product;
   $: ({
-    id, thumbnail, area, estate, price, status, lastUpdated
+    id, thumbnail, area, estate, price, status, lastUpdated,
+    valuation1_name, valuation1,
+    valuation2_name, valuation2,
+    last_transaction_date,
+    last_transaction_price,
+    block, flat, floor, saleable_area,
+    partition, unit_rate, agent_remark,
+    recent_similar_transaction, hand
   } = product);
 </script>
 
@@ -72,21 +79,40 @@
     <div class="center-group">
       
       <div class:empty={!area} >{ area || "" }</div>
-      <h2 class:empty={!estate} >{ estate || ""  }</h2>
+      <h2 class="w100" class:empty={!estate} >{ estate || ""  }</h2>
+      {#if block}<span class="w30">座: {block}</span>{/if}
+      {#if flat}<span class="w30">室: {flat}</span>{/if}
+      {#if floor}<span class="w30">層: {floor}</span>{/if}<span class="break-flex"></span>
+      {#if partition}<div>間隔: {partition}</div>{/if}
+      {#if saleable_area}<div>實積: {saleable_area}</div>{/if}
     </div>
     <div class="right-group">
       <div class:empty={!price}>
-        { price ? ("銀行1估價: " + price) : "" }
+        {
+          valuation1_name && valuation1 ?
+            `${valuation1_name}: ${valuation1}` :
+            ""
+        }
       </div>
       <div class:empty={!price}>
-        { price ? ("銀行2估價: " + price) : "" }
+        {
+          valuation2_name && valuation2 ?
+            `${valuation2_name}: ${valuation2}` :
+            ""
+        }
       </div>
       {#if price}
         <div class:empty={!price}>
           <MoreInfo
               href={LOCAL_ORIGIN + "/qna#關心價"}
-              title="這是甚麼?"/> 關心價: { price }
+              title="這是甚麼?"/> 關心價 ($百萬): { price }
         </div>
+      {/if}
+      {#if unit_rate}
+        <div>呎價: {unit_rate}</div>
+      {/if}
+      {#if recent_similar_transaction}
+        <div>近期同座不同層單位成交: {recent_similar_transaction}</div>
       {/if}
       <div class:empty={!status}>
         { status || ""  }
@@ -104,6 +130,18 @@
 
 
 <style>
+  .w30 {
+    display: inline-block;
+    width: 30%;
+  }
+  .w100 {
+    width: 100%;
+  }
+  .break-flex {
+    page-break-after: always;
+    break-after: always;
+  }
+
   h2 {
     margin: 0;
     padding: 0;
@@ -170,17 +208,9 @@
     justify-content: flex-start;
   }
 
-  .product > span:first-of-type {
-    margin-left: 5px
-  }
-  .product > span {
-    width: 15%;
-    font-size: 1.5em;
-    padding-top: 11px;
-  }
-
-
-  .product > span.empty {
-    border: 1px solid rgba(255, 0, 0, 0.5);
+  .product .center-group {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 5px;
   }
 </style>

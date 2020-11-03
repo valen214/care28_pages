@@ -60,9 +60,13 @@ function copyIndex(){
 const configs = fs.readdirSync(
   path.join(__dirname, "src/pages"), {
   withFileTypes: true
-}).filter(dirent => dirent.isFile() && 
-    dirent.name.toString().endsWith(".svelte")
-).map((dirent, i) => {
+}).filter(dirent => {
+  if(dirent.isFile()){
+    return dirent.name.toString().endsWith(".svelte")
+  } else{
+    
+  }
+}).map((dirent, i) => {
   let first = i === 0;
   let filename = dirent.name.toString();
   let basename = filename.match(/\/?([^/]+)\.svelte$/)[1];

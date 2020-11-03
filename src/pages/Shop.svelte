@@ -113,6 +113,7 @@
 
 <svelte:head>
   <base href={REMOTE_ORIGIN} />
+  <title>Care28 Shop</title>
 </svelte:head>
 
 

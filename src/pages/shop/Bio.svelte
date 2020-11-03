@@ -12,7 +12,6 @@
   .bio {
     height: 220px;
     display: flex;
-    font-size: 2em;
   }
   .bio img {
     height: 100%;
@@ -32,6 +31,7 @@
   .info h3 {
     margin: 0;
     display: inline;
+    font-size: 2em;
   }
 </style>
 
@@ -40,6 +40,7 @@
   <div class="info">
     <div>
       <h3>{name}{ owner ? " (您)" : ""}</h3> 的商店
+      <div>聯絡方法: ( 須要新增預約才可顯示 )</div>
     </div>
     {#if description }
       <div>

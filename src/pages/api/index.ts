@@ -42,6 +42,21 @@ export type Product = {
   upload?: {
     thumbnail?: File
   }
+  valuation1_name?: string,
+  valuation1?: string,
+  valuation2_name?: string,
+  valuation2?: string,
+  last_transaction_date?: string,
+  last_transaction_price?: string,
+  block?: string,
+  flat?: string,
+  floor?: string,
+  saleable_area?: string,
+  partition?: string,
+  unit_rate?: string,
+  agent_remark?: string
+  recent_similar_transaction?: string
+  hand?: string
 };
 
 export * from "./users";
