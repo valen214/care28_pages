@@ -18,6 +18,7 @@ export type User = {
   name?: string
   avatar?: string
   usertype?: "client" | "agent"
+  phone?: string
   rating?: number
   shopID?: number
 };
@@ -65,5 +66,4 @@ export * from "./appointment";
 export * from "./constants";
 export * from "./rest_util";
 export * from "./session";
-
-export type { Appointment } from "./appointment";
+export * from "./posts";

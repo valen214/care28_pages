@@ -3,7 +3,7 @@
   import TopBar from "./components/TopBar.svelte";
   import Button from "./components/Button.svelte";
   import MessageOverlay from "./components/MessageOverlay.svelte";
-  import { LOCAL_ORIGIN, REMOTE_ORIGIN } from "./api";
+  import { LOCAL_ORIGIN, REMOTE_ORIGIN } from "../api";
 
   let error_message;
   let password_not_match = false;

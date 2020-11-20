@@ -1,6 +1,6 @@
 
 
-import { Message } from "../components/chat";
+import { Message } from "../pages/components/chat";
 import { makeApiAppointmentCall } from "./rest_util";
 
 export type Appointment = {

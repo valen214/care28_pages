@@ -1,6 +1,6 @@
 
 
-import { makeApiInfoCall, User } from "../api";
+import { makeApiInfoCall, User, REMOTE_ORIGIN } from "../../api";
 
 export async function init(
   id: number
@@ -21,8 +21,9 @@ export async function init(
   let out: User = {};
 
   out.id = res["ID"];
-  out.avatar = res.avatar;
+  out.avatar = REMOTE_ORIGIN + "/wp-content/uploads/avatar/" + res.avatar;
   out.name = res.display_name;
+  out.phone = res.phone;
   
 
   return out;

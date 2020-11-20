@@ -3,28 +3,31 @@
 
   import TopBar from "./components/TopBar.svelte";
   import Button from "./components/Button.svelte";
-  import Chat from "./components/chat/Chat.svelte";
 
   import type { TMessage } from "./components/chat";
   import { MESSAGE_TYPE } from "./components/chat";
   
-  import type { Appointment } from "./api";
-  import { confirmAppointment } from "./api";
+  import type { Appointment } from "../api";
   import {
+    confirmAppointment,
     getCurrentUserID,
     makeApiAppointmentCall,
-    transformPayloadToAppointment
-  } from "./api";
+    transformPayloadToAppointment,
+    getCurrentUserInfo
+  } from "../api";
   
   import { getAppointmentIdFromQuery } from "./view-appointment/functions";
   
   let current_user_id = getCurrentUserID();
+  let usertype: string;
   let appointment_id = getAppointmentIdFromQuery();
   let appointment: Appointment;
   $: status = (
-    appointment?.cancelling ?
-      "預約取消中 (等待客戶共識)" :
-    appointment?.confirmed ?
+    appointment?.cancelling ? (
+      usertype === "agent" ?
+        "預約取消中 (等待客戶共識)" :
+        "預約取消中 (等待經紀共識)"
+    ) : appointment?.confirmed ?
       "已確認" :
     appointment?.finished ?
       "closed" :
@@ -32,8 +35,23 @@
   );
   let messages = writable<TMessage[]>([]);
 
+  $: isAgentInAppointment = (
+    usertype === "agent"
+  ) && (
+    appointment?.agent_ID === current_user_id
+  );
+
   let message = "Loading...";
   (async () => {
+    await getCurrentUserInfo(
+    ).then(res => res.json()
+    ).then(res => {
+      console.log(res);
+      if(res.usertype === "agent"){
+        usertype = "agent"
+      }
+    });
+
     console.log("appointment_id:", appointment_id);
     if(!appointment_id){
       message = "appointment does not exist";
@@ -138,23 +156,33 @@
         </div>
       </div>
       <div class="action-button-panel">
-        {#if appointment.cancelling}
-          <Button className="cancelling-button">
-            預約取消中 (等待客戶共識)
-          </Button>
-        {:else if appointment.confirmed}
-          <Button on:click={onCancelAppointment}>取消預約</Button>
+        {#if isAgentInAppointment}
+          {#if appointment?.cancelling}
+            <Button className="cancelling-button">
+              預約取消中 (等待客戶共識)
+            </Button>
+          {:else if appointment?.confirmed}
+            <Button on:click={onCancelAppointment}>取消預約</Button>
+          {:else}
+            <Button>要求更改預約日期</Button>
+            <Button on:click={onConfirmAppointment}>確認預約</Button>
+            <Button>拒絕預約</Button>
+          {/if}
         {:else}
           <Button>要求更改預約日期</Button>
-          <Button on:click={onConfirmAppointment}>確認預約</Button>
-          <Button>拒絕預約</Button>
+          <Button on:click={onCancelAppointment}>取消預約</Button>
         {/if}
       </div>
     </div>
-    <Chat
-        className="chat-container"
-        messages={$messages}
-        on:message={onNewMessage} />
+    <div class="">
+      {#if isAgentInAppointment}
+        <h3>經紀專頁</h3>
+      {:else}
+        預約完成後可輸入評分<br />
+        評分:<br />
+        報告:<br />
+      {/if}
+    </div>
   </div>
 {/if}
 
@@ -198,6 +226,11 @@
     flex-direction: column;
     width: 50%;
     padding: 15px;
+  }
+  .action-button-panel > :global(a) {
+    margin-right: 15px;
+    align-self: self-end;
+    width: 50%;
   }
   .action-button-panel :global(.cancelling-button) {
     background: rgba(255, 50, 50, 1.0);

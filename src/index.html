@@ -45,7 +45,7 @@
     };
 
     let renderWithFile = async (src, props) => {
-      injectStyleSheet(src.match(/^([^.]+)\.js$/)[1] + ".css");
+      // injectStyleSheet(src.match(/^([^.]+)\.js$/)[1] + ".css");
       return import(
         src
       ).then(module => {
@@ -66,6 +66,13 @@
     }
 
     switch(match || location.pathname){
+    case "/agent":
+      renderWithFile("/pages/Agent.js");
+      break;
+    case "/outstanding-agents":
+      renderWithFile("/pages/OutstandingAgents.js");
+      break;
+      break;
     case "/create-appointment":
       renderWithFile("/pages/CreateAppointment.js");
       break;
@@ -108,7 +115,13 @@
       break;
     default:
     case "/home":
-      renderWithFile("/pages/Home.js");
+      renderWithFile("/pages/Home.js", {
+        posts: [{
+          "id": 2,
+          "title": "文章1",
+          "content": "文章1內容",
+        }]
+      });
       break;
     }
   </script>

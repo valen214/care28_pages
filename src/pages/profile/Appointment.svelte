@@ -1,8 +1,8 @@
 
 
 <script lang="ts">
-  import type { Appointment as TAppointment } from "../api";
-  import { confirmAppointment } from "../api";
+  import type { Appointment as TAppointment } from "../../api";
+  import { confirmAppointment } from "../../api";
   import Button from "../components/Button.svelte";
   
   export let appointment: TAppointment;
@@ -79,6 +79,7 @@
     padding: 15px;
     font-size: 20px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    height: 190px;
 
     grid-template-columns: 50% 1fr;
   }

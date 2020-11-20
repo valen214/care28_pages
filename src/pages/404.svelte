@@ -3,7 +3,7 @@
 
 <script>
   import TopBar from "./components/TopBar.svelte";
-  import { REMOTE_ORIGIN } from "./api";
+  import { REMOTE_ORIGIN } from "../api";
 
 </script>
 

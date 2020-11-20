@@ -1,8 +1,8 @@
 
 
 <script lang="ts">
-  import type { Tag } from "../api";
-  import { LOCAL_ORIGIN } from "../api";
+  import type { Tag } from "../../api";
+  import { LOCAL_ORIGIN } from "../../api";
 
   export let name: string = "";
   export let avatar: string = "";
@@ -10,7 +10,7 @@
   export let tags: Tag[] = [];
   $: console.log("tags:", tags);
 
-  function tagStyle({
+  function transfromStyleObjectToString({
     background,
     color,
   }: Tag){
@@ -31,7 +31,7 @@
   {#if tags && tags.length}
     <div class="tags">
       {#each tags as tag}
-        <div class="tag" style={tagStyle(tag)}>
+        <div class="tag" style={transfromStyleObjectToString(tag)}>
           { tag.name }
           {#if tag.help}
             <a class="tag-help"

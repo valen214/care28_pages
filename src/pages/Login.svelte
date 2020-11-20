@@ -3,7 +3,7 @@
 <script>
   import TopBar from "./components/TopBar.svelte";
   import Button from "./components/Button.svelte"
-  import { login as __login } from "./api/session";
+  import { login as __login } from "../api/session";
 
   let loading = false;
   let username = "";
@@ -25,6 +25,9 @@
       } else{
         document.location.replace(document.location.origin);
       }
+    } else {
+      showWrongInfoMessage = true;
+      loading = false;
     }
   }
 

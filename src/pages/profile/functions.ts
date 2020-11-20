@@ -8,8 +8,8 @@ import {
   Appointment,
   Tag,
   transformTags
-} from "../api";
-import { transformPayloadToAppointment } from "../api/appointment_util";
+} from "../../api";
+import { transformPayloadToAppointment } from "../../api/appointment_util";
 
 export async function init(
   current_user_id: number,

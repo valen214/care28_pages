@@ -48,6 +48,7 @@
     height: 100%;
     width: 30%;
     object-fit: contain;
+    object-position: top;
   }
 
   .agent-info-container {

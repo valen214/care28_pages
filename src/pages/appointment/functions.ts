@@ -1,11 +1,11 @@
 
 
-import type { Agent } from "../api";
+import type { Agent } from "../../api";
 import {
   makeApiInfoCall,
   AVATAR_BASE_PATH,
   makeApiAppointmentCall
-} from "../api";
+} from "../../api";
 
 export function getAgentIdFromQuery(){
   let searchParam = new URLSearchParams(location.search);

@@ -2,7 +2,7 @@
 
 
 <script lang="ts">
-  import type { Agent } from "./api";
+  import type { Agent } from "../api";
   import TopBar from "./components/TopBar.svelte";
   import Button from "./components/Button.svelte";
   import {
@@ -10,7 +10,7 @@
     getAgentInfo,
     submitAppointment
   } from "./appointment/functions";
-  import { getCurrentUserID } from "./api/session";
+  import { getCurrentUserID } from "../api/session";
 
   let loading = true;
   export let agent_id = getAgentIdFromQuery();
@@ -19,6 +19,7 @@
   })( new Date() );
   let date: string = TODAY;
   let message: string = "";
+  export let selected_product = "abcd";
 
   let agent: Agent;
   getAgentInfo(agent_id).then(_agent => {
@@ -40,7 +41,7 @@
       { message || "Loading..." }
     </div>
   {/if}
-  <div class="top-panel">
+  <div class="info-panel">
     <h2>Appointment</h2>
     <div class="agent-name-row">
       Agent: { agent?.name }
@@ -52,6 +53,12 @@
           required={true}
           min={TODAY} />
     </label>
+    <div class="product-name-row">
+      Product: <input type="text" value={selected_product}/>
+    </div>
+  </div>
+  <div class="map-panel">
+    MAP
   </div>
   <div class="content-panel">
     <div class="client-message-panel">
@@ -97,7 +104,7 @@
 
 <style>
   .page-content {
-    height: 100%;
+    height: calc(100% - 100px);
     width: 100%;
     padding: 15px;
     position: relative;
@@ -106,12 +113,14 @@
 
     display: grid;
     grid-template-areas:
-        "top      client"
-        "button   button";
-    grid-template-rows: 600px 1fr;
+        "info       map"
+        "client     client"
+        "button     null";
+    grid-template-rows: 400px 300px 100px;
     grid-template-columns: 50% 1fr;
   }
-  .top-panel { grid-area: top; }
+  .map-panel { grid-area: map; }
+  .info-panel { grid-area: info; }
   .client-message-panel { grid-area: client; }
   .button-panel { grid-area: button; }
 
@@ -128,27 +137,30 @@
     background: white;
   }
 
-  .top-panel {
+  .info-panel {
     height: 200px;
     width: 100%;
   }
 
-  .top-panel .agent-name-row {
+  .info-panel .agent-name-row {
     height: 42px;
   }
 
-  .top-panel .date-row {
+  .info-panel .date-row {
     display: flex;
     align-items: center;
     justify-content: flex-start;
     height: 80px;
   }
 
-  .top-panel .date-row input {
+  .info-panel .date-row input {
     border: 1px solid rgba(0, 0, 0, 0.2);
     height: 42px;
     font-size: 24px;
     margin-left: 15px;
+  }
+  .product-name-row input {
+    font-size: 1em;
   }
 
 
@@ -161,7 +173,9 @@
   }
 
   .client-message-input {
-    height: 300px;
+    height: 200px;
+    max-height: 250px;
+
     width: 100%;
     font-size: 24px;
     padding: 5px;

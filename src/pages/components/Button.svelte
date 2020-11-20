@@ -1,7 +1,7 @@
 
 
 
-<script>
+<script lang="ts">
   // https://svelte.dev/tutorial/actions
 
   export let id = "";
@@ -9,8 +9,16 @@
   export let background = "";
   export let hoverbgcolor = "";
   export let activebgcolor = "";
-  export let style = "", _style = "";
+  export let style: object | string = {};
+  $: _style = (
+    typeof style === "object"
+  ) && Object.entries(
+    style
+  ).reduce((l, [k, v]) => {
+    return l + `${k}: ${v};`;
+  }, "");
   export let className = "";
+  export let self: HTMLAnchorElement = null;
 
   export let clientHeight = 0;
 </script>
@@ -19,6 +27,7 @@
 
 <a { id } { href } on:click
     class={["button-class", className].join(" ")}
+    bind:this={self}
     bind:clientHeight
     on:mouseover
     on:mouseleave
@@ -26,7 +35,7 @@
       background && `--background: ${background}`,
       hoverbgcolor && `--hover-bg-color: ${hoverbgcolor}`,
       activebgcolor && `--active-bg-color: ${activebgcolor}`,
-      style,
+      (typeof style === "string") && style,
       _style,
     ].filter(Boolean).join(";")}>
   <slot></slot>

@@ -23,8 +23,10 @@ const genConfig = ({
     output: {
       sourcemap: true,
       format: 'es',
-      name: input || "app",
-      dir: 'public/pages'
+      dir: 'public/pages',
+      chunkFileNames(chunkInfo){
+        return "chunk-[name].js"; // -[hash]
+      }
     },
     watch: process.env.ROLLUP_WATCH && {
       buildDelay: 200,
@@ -32,9 +34,6 @@ const genConfig = ({
     plugins: [
       svelte({
         dev: !production,
-        css: name && (css => {
-          css.write(name + ".css");
-        }),
         preprocess: svelte_preprocess(),
       }),
       commonjs({
@@ -57,40 +56,54 @@ function copyIndex(){
 }
 
 
-const configs = fs.readdirSync(
+const input = fs.readdirSync(
   path.join(__dirname, "src/pages"), {
   withFileTypes: true
 }).filter(dirent => {
   if(dirent.isFile()){
     return dirent.name.toString().endsWith(".svelte")
   } else{
-    
+    return fs.existsSync(path.join(
+      __dirname, "src/pages", dirent.name, "index.svelte"
+    ));
   }
 }).map((dirent, i) => {
   let first = i === 0;
-  let filename = dirent.name.toString();
-  let basename = filename.match(/\/?([^/]+)\.svelte$/)[1];
-  console.assert(path.basename(filename) === filename,
-      `filename(${filename}) not equals to path.basename()`, path.basename(filename));
-  return genConfig({
-    name: basename,
-    input: "src/pages/" + filename,
-    plugins: first && [
-      {
-        name: 'watch-external',
-        buildStart(){
-          this.addWatchFile(path.resolve(__dirname, 'src/index.html'));
-          copyIndex();
-        },
-        watchChange(){
-          console.log("index.html modified, copying...");
-          copyIndex();
-        }
+  let filename, basename;
+  if(dirent.isFile()){
+    filename = dirent.name;
+    basename = filename.match(/\/?([^/]+)\.svelte$/)[1];
+  } else {
+    filename = dirent.name + "/index.svelte";
+    basename = ((s, func) => (
+      s.split(/[-_]/g).map(func).join("")
+    ))(dirent.name, (s) => (
+      s.charAt(0).toUpperCase() + s.slice(1)
+    ));
+  }
+  return [ basename, filename ];
+}).reduce((l, [ basename, filename ]) => {
+  l[basename] = "./src/pages/" + filename;
+  return l;
+}, {});
+
+
+
+export default genConfig({
+  name: "care28_pages",
+  input,
+  plugins: [
+    {
+      name: 'watch-external',
+      buildStart(){
+        this.addWatchFile(path.resolve(__dirname, 'src/index.html'));
+        copyIndex();
+      },
+      watchChange(){
+        console.log("index.html modified, copying...");
+        copyIndex();
       }
-    ]
-  });
+    }
+  ]
 });
-
-
-export default configs;
 

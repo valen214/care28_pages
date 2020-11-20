@@ -2,7 +2,7 @@
 <script lang="ts">
   import { writable, derived } from "svelte/store";
 
-  import { LOCAL_ORIGIN, getCurrentUserID } from "./api";
+  import { LOCAL_ORIGIN, getCurrentUserID } from "../api";
   import TopBar from "./components/TopBar.svelte";
   import Button from "./components/Button.svelte";
   import { init } from "./profile/functions";
@@ -58,28 +58,33 @@
         name={$name} avatar={$avatar}
         tags={$tags} />
     <div class="top-panel-button-panel">
-      <Button className="w100"
-          href={LOCAL_ORIGIN + "/shop"}>View My Shop</Button>
+      {#if $usertype === "agent"}
+        <Button className="w100"
+            href={LOCAL_ORIGIN + "/shop"}>View My Shop</Button>
+      {/if}
       <Button className="w100"
           href={LOCAL_ORIGIN + "/edit-profile"}>Edit Profile</Button>
     </div>
   </div>
-  <h2>Appointments</h2>
-  {#if view_all_appointments}
-    <h3 class="inline-block">
-      All Appointments
-    </h3>
-    <Button on:click={() => {
-      view_all_appointments = false;
-    }}>View Only Pending Appointments</Button>
-  {:else}
-    <h3 class="pending-appointments-title">
-      Pending Appointments
-    </h3>
-    <Button on:click={() => {
-      view_all_appointments = true;
-    }}>View All Appointments</Button>
-  {/if}
+  <h2>預約</h2>
+  <div class="subtitle-row">
+    {#if view_all_appointments}
+      <h3 class="inline-block">
+        所有預約
+      </h3>
+      <Button on:click={() => {
+        view_all_appointments = false;
+      }}>只查看待確認預約</Button>
+    {:else}
+      <h3 class="pending-appointments-title">
+        待確認預約
+      </h3>
+      <Button on:click={() => {
+        view_all_appointments = true;
+      }}>查看所有預約</Button>
+    {/if}
+    <Button style="margin-left: auto">更改排列順序</Button>
+  </div>
   {#each (view_all_appointments ?
       $appointments :
       $pending_appointments
@@ -134,6 +139,10 @@
     padding: 15px;
   }
 
+  .subtitle-row {
+    display: flex;
+    align-items: center;
+  }
   .pending-appointments-title {
     display: inline-block;
   }

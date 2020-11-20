@@ -1,7 +1,14 @@
 
 
-import type { Agent } from "../api/index";
-import { makeApiInfoCall, REMOTE_ORIGIN } from "../api/index";
+import type { 
+  Agent,
+  Post
+} from "../../api";
+import {
+  makeApiCall,
+  makeApiInfoCall,
+  REMOTE_ORIGIN
+} from "../../api";
 
 export async function getOutstandingAgents(
     setAgents: (a: { [key: string]: Agent }) => void
@@ -59,4 +66,11 @@ export async function getOutstandingAgents(
   }
 
 
+}
+
+
+export async function getRecentPosts(){
+  return await makeApiCall("/wp-json/api/v1/posts", {
+    type: "recent",
+  }).then(res => res.json());
 }

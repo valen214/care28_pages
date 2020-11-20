@@ -1,18 +1,23 @@
 
 <script>
-  import { makeApiInfoCall, REMOTE_ORIGIN, onDev, LOCAL_ORIGIN } from "./api";
-  import { getCurrentUserID } from "./api/session";
-  import TopBar from "./components/TopBar.svelte";
-  import Button from "./components/Button.svelte";
-  import Bio from "./shop/Bio.svelte";
-  import Product from "./shop/Product.svelte";
-  import Appointment from "./shop/Appointment.svelte";
+  import {
+    makeApiInfoCall,
+    REMOTE_ORIGIN,
+    LOCAL_ORIGIN,
+    onDev,
+    getCurrentUserID,
+  } from "../../api";
+  import TopBar from "../components/TopBar.svelte";
+  import Button from "../components/Button.svelte";
+  import Bio from "./Bio.svelte";
+  import Product from "./Product.svelte";
+  import Appointment from "./Appointment.svelte";
   import {
     fetchProducts,
     fetchAppointments,
     getUserIdFromUrl,
     saveProducts
-  } from "./shop/functions";
+  } from "./functions";
 
   export let id = getUserIdFromUrl() || "";
   let current_user_id = getCurrentUserID();
@@ -37,6 +42,11 @@
     );
   })();
   $: console.log("products:", products);
+  $: top_panel_style = (() => {
+    let url = REMOTE_ORIGIN +
+        "/wp-content/themes/twentytwenty/assets/images/home-banner-image.png"
+    return `background: center / cover no-repeat url(${url})`
+  })();
 
   async function saveEdit(){
     mode = false;
@@ -124,7 +134,8 @@
       loading...
     </div>
   {/if}
-  <div class="top-panel">
+  <div class="top-panel"
+      style={top_panel_style}>
     <div class="top-panel-left-group">
       <Bio
         name={display_name}
@@ -270,6 +281,7 @@
 
   .top-panel {
     height: 300px;
+    background: center / cover no-repeat url(http://18.163.56.65/wp-content/themes/twentytwenty/assets/images/home-banner-image.png);
   }
   .top-panel-left-group {
     float: left;
