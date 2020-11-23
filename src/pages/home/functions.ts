@@ -68,9 +68,3 @@ export async function getOutstandingAgents(
 
 }
 
-
-export async function getRecentPosts(){
-  return await makeApiCall("/wp-json/api/v1/posts", {
-    type: "recent",
-  }).then(res => res.json());
-}

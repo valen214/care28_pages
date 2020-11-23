@@ -2,7 +2,7 @@
 
 <script lang="ts">
   import type { Product } from "../../api";
-  import { LOCAL_ORIGIN } from "../../api";
+  import { LOCAL_ORIGIN, IMAGE_BASE_PATH } from "../../api";
   import Button from "../components/Button.svelte";
   import AreaSelect from "../components/AreaSelect.svelte";
   import MoreInfo from "../components/MoreInfo.svelte";
@@ -40,7 +40,7 @@
             thumbnail: file_input.files[0]
           };
         }}/>
-    <img src={thumbnail}
+    <img src={IMAGE_BASE_PATH + thumbnail}
         class="thumbnail edit"
         alt="thumbnail"
         on:click={() => {
@@ -74,7 +74,7 @@
     {/if}
     <div class="left-group">
       <img class="thumbnail"
-          src={thumbnail} alt="thumbnail" />
+          src={IMAGE_BASE_PATH + thumbnail} alt="thumbnail" />
     </div>
     <div class="center-group">
       

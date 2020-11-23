@@ -63,9 +63,17 @@
       match = "/appointment";
     } else if(location.pathname.match(/\/qna/)){
       match = "/qna";
+    } else if(location.pathname.match(/^\/article\//)){
+      match = "/article";
     }
 
     switch(match || location.pathname){
+    case "/articles":
+      renderWithFile("/pages/Articles.js");
+      break;
+    case "/article":
+      renderWithFile("/pages/Article.js");
+      break;
     case "/agent":
       renderWithFile("/pages/Agent.js");
       break;

@@ -1,13 +1,12 @@
 
 
 <script>
-
+  import { REMOTE_ORIGIN, getRecentPosts } from "../../api";
   import TopBar from "../components/TopBar.svelte";
   import Button from "../components/Button.svelte";
   import AgentCard from "./AgentCard.svelte";
   import Post from "./Post.svelte";
-  import { getOutstandingAgents, getRecentPosts } from "./functions";
-  import { REMOTE_ORIGIN } from "../../api";
+  import { getOutstandingAgents } from "./functions";
 
   let showSearchDropDown = false;
   let activeDistrictIndex = 0;
@@ -82,7 +81,7 @@
   <div class="outstanding-agents">
     <div class="outstanding-agents-header">
       <h2>出色經紀</h2>
-      <a href="/#" class="more">
+      <a href="/agents" class="more">
         更多
       </a>
     </div>
@@ -97,7 +96,7 @@
   <div class="posts">
     <div class="posts-header">
       <h2>最新文章</h2>
-      <a href="/#" class="more">
+      <a href="/articles" class="more">
         更多
       </a>
     </div>
