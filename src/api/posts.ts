@@ -6,6 +6,8 @@ export type Post = Partial<{
   title: string
   author: string
   content: string
+  modified: string
+  date: string
 }>
 
 

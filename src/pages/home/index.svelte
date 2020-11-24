@@ -14,6 +14,7 @@
   export let outstanding_agents = {};
   getOutstandingAgents(agents => {
     outstanding_agents = agents;
+    console.log("outstanding_agents:", agents);
   });
 
   export let posts = [];
@@ -85,9 +86,11 @@
         更多
       </a>
     </div>
-    {#each Object.entries(outstanding_agents) as [ id, { name, rating, area, images }] }
+    {#each Object.entries(outstanding_agents) as [ id, {
+        images, ...props
+      }] }
       <AgentCard
-        { ...{ id, name, rating, area }}
+        { ...{ id, images, ...props }}
         avatar={images?.[0]} />
     {:else}
       Loading...

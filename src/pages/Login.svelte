@@ -36,8 +36,8 @@
   }
 </script>
 
-<TopBar />
 <div class="page-content">
+  <TopBar />
   <div class="login-panel-positioner flex-center">
     <div class="login-panel flex-center">
       <div class="row flex-center">

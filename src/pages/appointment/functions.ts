@@ -9,7 +9,23 @@ import {
 
 export function getAgentIdFromQuery(){
   let searchParam = new URLSearchParams(location.search);
-  let id = searchParam.get("agent_id");
+  let id = searchParam.get("agent")|| searchParam.get("agent_id");
+  if(id){
+    return parseInt(id);
+  }
+}
+
+export function getProductIdFromQuery(){
+  let searchParam = new URLSearchParams(location.search);
+  let id = searchParam.get("product") || searchParam.get("product_id");
+  if(id){
+    return parseInt(id);
+  }
+}
+
+export function getShopIdFromQuery(){
+  let searchParam = new URLSearchParams(location.search);
+  let id = searchParam.get("shop") || searchParam.get("shop_id");
   if(id){
     return parseInt(id);
   }

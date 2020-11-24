@@ -26,21 +26,25 @@
   let view_all_appointments = false;
 
 
-  (async function(){
-
-    if(current_user_id){
-      await init(
-        current_user_id,
-        name,
-        avatar,
-        usertype,
-        appointments,
-        tags
-      );
-      loading = false;
-    } else {
+  (function onPageLoad(){
+    if(!current_user_id){
       location.href = location.origin + "/login";
+      return;
     }
+
+    init(
+      current_user_id,
+      name,
+      avatar,
+      usertype,
+      appointments,
+      tags
+    ).then(() => {
+      loading = false;
+    }).catch(e => {
+      console.log(e);
+      location.href = LOCAL_ORIGIN + "/login";
+    });
   })();
 
 

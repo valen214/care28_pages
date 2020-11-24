@@ -21,7 +21,13 @@ export async function init(
 ){
   let appointment_res = makeApiAppointmentCall({
     "type": "query_appointments"
-  }).then(res => res.json());
+  }).then(res => {
+    console.log("appointment response:", res);
+    return res.json()
+  }).catch(e => {
+    console.log("get appointments failed", e);
+    throw new Error("get appointment failed");
+  });
 
 
   let res = await makeApiInfoCall({

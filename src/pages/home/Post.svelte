@@ -3,21 +3,39 @@
 
 
   export let post: any = {};
-  console.log(post);
 
 </script>
 
 
 <div class="post">
-  <a href={LOCAL_ORIGIN + "/article/" + post.id}>
+  <a class="title-link"
+      href={LOCAL_ORIGIN + "/article/" + post.id}>
     { post.title || "" }
   </a>
+  {#if post.date}
+    <i class="upload-date">
+      上載於 { post.date }
+    </i>
+  {/if}
 </div>
 
 
 <style>
   .post {
-    padding: 15px;
+    display: flex;
+    align-items: center;
+    padding: 5px 15px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  .title-link {
+    width: 50%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+  }
+
+  .upload-date {
+    margin: 0 0 0 auto;
   }
 </style>

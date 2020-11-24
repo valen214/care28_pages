@@ -24,6 +24,7 @@ export type User = {
 };
 
 export type Agent = {
+  id?: string | number
   name?: string
   rating?: number
   area?: string
@@ -40,9 +41,6 @@ export type Product = {
   price?: string,
   status?: string,
   lastUpdated?: string
-  upload?: {
-    thumbnail?: File
-  }
   valuation1_name?: string,
   valuation1?: string,
   valuation2_name?: string,
@@ -58,6 +56,12 @@ export type Product = {
   agent_remark?: string
   recent_similar_transaction?: string
   hand?: string
+
+  
+  upload?: {
+    thumbnail?: File
+  }
+  associated_agent_id?: number | string
 };
 
 export * from "./users";

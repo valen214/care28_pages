@@ -39,7 +39,8 @@ export async function getCurrentUserInfo(){
   return await makeApiInfoCall({
     type: "query_user",
     fields: [
-      "usertype"
+      "usertype",
+      "shop_ID",
     ],
   });
 }

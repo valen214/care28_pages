@@ -1,10 +1,10 @@
 
 <script lang="ts">
-  import { AVATAR_BASE_PATH } from "../../api";
+  import { AVATAR_BASE_PATH, LOCAL_ORIGIN } from "../../api";
 
   import Button from "../components/Button.svelte";
 
-  // export let id: number | string = '';
+  export let id: number | string = '';
   export let shop_id: string | number = "";
   export let avatar: string = "";
   export let name: string = "";
@@ -14,6 +14,14 @@
   $: parsed_avatar_src = !avatar ? "" :
       avatar.startsWith("http") ? avatar :
       AVATAR_BASE_PATH + avatar;
+
+  $: make_appointment_href = (
+    LOCAL_ORIGIN + "/make_appointment" +
+    (q => q ? "?" + q : "")([
+      id && ("agent=" + id),
+      shop_id && ("shop=" + shop_id)
+    ].filter(Boolean).join("&"))
+  );
 
   $: console.log("avatar:", avatar);
 </script>
@@ -34,8 +42,8 @@
     </div>
     <Button
         style="white-space: initial"
-        href={ shop_id ? ( "/shop/" + shop_id ) : undefined }>
-      看{ name }的商店
+        href={ make_appointment_href }>
+      預約睇樓
     </Button>
   </div>
 </div>

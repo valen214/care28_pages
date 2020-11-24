@@ -7,6 +7,8 @@
   import Button from "./components/Button.svelte";
   import {
     getAgentIdFromQuery,
+    getProductIdFromQuery,
+    getShopIdFromQuery,
     getAgentInfo,
     submitAppointment
   } from "./appointment/functions";
@@ -14,12 +16,15 @@
 
   let loading = true;
   export let agent_id = getAgentIdFromQuery();
+  export let product_id = getProductIdFromQuery();
+  export let shop_id = getShopIdFromQuery();
+  $: console.log("shop_id:", shop_id);
+
   const TODAY: string = (d => {
     return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`
   })( new Date() );
   let date: string = TODAY;
   let message: string = "";
-  export let selected_product = "abcd";
 
   let agent: Agent;
   getAgentInfo(agent_id).then(_agent => {
@@ -54,7 +59,7 @@
           min={TODAY} />
     </label>
     <div class="product-name-row">
-      Product: <input type="text" value={selected_product}/>
+      Product: <input type="text" value={"product id: " + product_id}/>
     </div>
   </div>
   <div class="map-panel">
@@ -71,7 +76,8 @@
     <Button on:click={async () => {
       message = "loading...";
       loading = true;
-      let result = await submitAppointment(agent_id, getCurrentUserID(), date, message);
+      let result = await submitAppointment(
+          agent_id, getCurrentUserID(), date, message);
       console.log(result);
       if(result.status === "success"){
         function appointmentSuccessMessage(remaining_seconds = 5){
