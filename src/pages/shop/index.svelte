@@ -19,6 +19,7 @@
   let agents: Agent[] = [];
   let products: TProduct[] = [];
   let shop_info: any = {};
+  let loading = true;
 
   (async function onPageLoad(){
     if(!id){
@@ -32,6 +33,8 @@
       agents = _agents;
       products = _products;
       shop_info = _shop_info;
+
+      loading = false;
     });
   })();
 
@@ -84,6 +87,18 @@
         <Product { product }
             shop_id={id}
             agent_id={agents[0]["ID"] } />
+      {:else}
+        {#if loading}
+          <div style="width: 100%;
+                      height:300px;
+                      display:flex;
+                      justify-content: center;
+                      align-items: center">
+            Loading...
+          </div>
+        {:else}
+          無商品
+        {/if}
       {/each}
     {/if}
   </div>

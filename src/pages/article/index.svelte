@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getPost, makeApiCall, makeFormPost } from "../../api";
+  import { getPost, LOCAL_ORIGIN, makeApiCall, makeFormPost } from "../../api";
   import type { Post } from "../../api";
   import Button from "../components/Button.svelte";
 
@@ -23,7 +23,8 @@
     Loading...
   </div>
 {:else}
-  <div>
+  <div class="page-content">
+    <Button href={LOCAL_ORIGIN + "/articles"}>返回所有文章</Button>
     <h2>{ post.title }</h2>
     <div>
       {@html post.content }
@@ -39,5 +40,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .page-content {
+    padding: 15px;
   }
 </style>

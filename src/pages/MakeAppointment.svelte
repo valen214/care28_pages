@@ -64,6 +64,12 @@
   </div>
   <div class="map-panel">
     MAP
+    <div style="position: absolute; bottom: 0;">
+      <label>
+        位置
+        <input type="text" />
+      </label>
+    </div>
   </div>
   <div class="content-panel">
     <div class="client-message-panel">
@@ -141,6 +147,11 @@
     align-items: center;
     justify-content: center;
     background: white;
+  }
+
+  .map-panel {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    position: relative;
   }
 
   .info-panel {

@@ -62,19 +62,32 @@
         </span>
         <input type="file" />
       </div>
+      <div class="default-location p15">
+        <span class="field-label">
+          Location:
+        </span>
+        <input type="text" bind:value={user_info.location}  />
+      </div>
       <div class="buttons-panel">
         <Button on:click={async () => {
               message = "loading...";
 
+              let fields = Object.entries(
+                user_info
+              ).reduce((out, [key, value]) => {
+                if(value !== original_user_info[key]){
+                  out[key] = value;
+                }
+                return out;
+              }, {})
+
               let a = await makeApiCall("/wp-json/api/v2/info", {
                 "type": "edit_user",
-                "fields": {
+                "fields": fields
+              }).catch(console.error);
 
-                }
-              });
-
-              message = "";
-              location.href = LOCAL_ORIGIN + "/profile";
+              location.href = LOCAL_ORIGIN + "/edit-profile"; // reload
+              message = "upload completed! reloading...";
             }}>Confirm Edit</Button>
         <Button href={LOCAL_ORIGIN + "/profile"}>Cancel Edit</Button>
       </div>
@@ -88,6 +101,10 @@
     border: 1px solid rgba(0, 0, 0, 0.2);
     font-size: 24px;
     height: 50px;
+  }
+
+  .p15 {
+    padding: 15px;
   }
 
   .page-content {

@@ -1,18 +1,21 @@
 
 
 <script>
-  import { REMOTE_ORIGIN, getRecentPosts } from "../../api";
+  import {
+    REMOTE_ORIGIN,
+    getRecentPosts,
+    getOutstandingAgents
+  } from "../../api";
   import TopBar from "../components/TopBar.svelte";
   import Button from "../components/Button.svelte";
   import AgentCard from "./AgentCard.svelte";
   import Post from "./Post.svelte";
-  import { getOutstandingAgents } from "./functions";
 
   let showSearchDropDown = false;
   let activeDistrictIndex = 0;
 
   export let outstanding_agents = {};
-  getOutstandingAgents(agents => {
+  getOutstandingAgents().then(agents => {
     outstanding_agents = agents;
     console.log("outstanding_agents:", agents);
   });
@@ -106,6 +109,8 @@
     <div class="posts-container">
       {#each posts as post}
         <Post { post } />
+      {:else}
+        Loading...
       {/each}
     </div>
   </div>

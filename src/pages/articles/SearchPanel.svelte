@@ -2,6 +2,7 @@
   import { REMOTE_ORIGIN } from "../../api";
   import Button from "../components/Button.svelte";
 
+  export let search_string = "";
 </script>
 
 <div class="search-panel">
@@ -11,12 +12,15 @@
       }
       style="
         position: absolute;
+        margin-top: -70px;
         z-index: -1000;
         object-fit: contain;
         width: 100%;"
       alt=""/>
   <div class="input-button-row">
-    <input type="text" class="search-input" />
+    <input type="text" class="search-input" on:input={e => {
+      search_string = e.target.value;
+    }}/>
     <Button
         style="border-radius: 0 5px 5px 0; border: 1px solid rgba(0, 0, 0, 0.2)">
       搜尋文章

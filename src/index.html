@@ -77,6 +77,9 @@
     case "/agent":
       renderWithFile("/pages/Agent.js");
       break;
+    case "/agents":
+      renderWithFile("/pages/Agents.js");
+      break;
     case "/outstanding-agents":
       renderWithFile("/pages/OutstandingAgents.js");
       break;
@@ -126,7 +129,7 @@
       renderWithFile("/pages/Home.js", {
         posts: [{
           "id": 2,
-          "title": "文章1",
+          "title": "only exists in localhost, check index.html",
           "content": "文章1內容",
         }]
       });

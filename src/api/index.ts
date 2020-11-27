@@ -21,6 +21,7 @@ export type User = {
   phone?: string
   rating?: number
   shopID?: number
+  location?: string
 };
 
 export type Agent = {
@@ -71,3 +72,4 @@ export * from "./constants";
 export * from "./rest_util";
 export * from "./session";
 export * from "./posts";
+export * from "./agents";
